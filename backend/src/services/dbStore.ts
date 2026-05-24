@@ -15,8 +15,26 @@ interface IFallbackDB {
   toolkitItems?: IToolkitItem[];
 }
 
+class AsyncLock {
+  private promise: Promise<void> = Promise.resolve();
+
+  public async acquire(): Promise<() => void> {
+    let release: () => void;
+    const nextPromise = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const currentPromise = this.promise;
+    this.promise = nextPromise;
+    await currentPromise;
+    return release!;
+  }
+}
+
+const fileLock = new AsyncLock();
+
 export class DBStore {
   private static useMongoStorage: boolean = false;
+  private static cachedData: IFallbackDB | null = null;
 
   public static setStorageMode(useMongo: boolean) {
     this.useMongoStorage = useMongo;
@@ -28,19 +46,42 @@ export class DBStore {
   }
 
   private static async getFallbackData(): Promise<IFallbackDB> {
+    const release = await fileLock.acquire();
     try {
-      const data = await fs.readFile(FALLBACK_FILE_PATH, 'utf-8');
-      return JSON.parse(data) as IFallbackDB;
-    } catch (error) {
-      // If file doesn't exist, create it with empty collections
-      const initialData: IFallbackDB = { assignments: [], questionPapers: [] };
-      await fs.writeFile(FALLBACK_FILE_PATH, JSON.stringify(initialData, null, 2));
-      return initialData;
+      try {
+        const data = await fs.readFile(FALLBACK_FILE_PATH, 'utf-8');
+        if (!data || data.trim() === '') {
+          if (this.cachedData) {
+            return this.cachedData;
+          }
+          throw new Error('File is empty');
+        }
+        const parsed = JSON.parse(data) as IFallbackDB;
+        this.cachedData = parsed;
+        return parsed;
+      } catch (error: any) {
+        if (error.code === 'ENOENT' || !this.cachedData) {
+          const initialData: IFallbackDB = { assignments: [], questionPapers: [], toolkitItems: [] };
+          await fs.writeFile(FALLBACK_FILE_PATH, JSON.stringify(initialData, null, 2));
+          this.cachedData = initialData;
+          return initialData;
+        }
+        console.warn('[DBStore] JSON Parse failed or empty file. Returning in-memory cached database.', error);
+        return this.cachedData;
+      }
+    } finally {
+      release();
     }
   }
 
   private static async writeFallbackData(data: IFallbackDB): Promise<void> {
-    await fs.writeFile(FALLBACK_FILE_PATH, JSON.stringify(data, null, 2));
+    const release = await fileLock.acquire();
+    try {
+      this.cachedData = data;
+      await fs.writeFile(FALLBACK_FILE_PATH, JSON.stringify(data, null, 2));
+    } finally {
+      release();
+    }
   }
 
   // --- Assignments CRUD Operations ---

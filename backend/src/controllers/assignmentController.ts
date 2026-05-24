@@ -91,9 +91,10 @@ export class AssignmentController {
             }
           } else if (file.mimetype === 'application/pdf' || file.originalname.endsWith('.pdf')) {
             try {
-              const pdfParse = require('pdf-parse');
+              const { PDFParse } = require('pdf-parse');
               const dataBuffer = await fs.readFile(file.path);
-              const pdfData = await pdfParse(dataBuffer);
+              const parser = new PDFParse({ data: dataBuffer });
+              const pdfData = await parser.getText();
               sourceText += `\n\n--- Extracted Text from PDF: ${file.originalname} ---\n`;
               sourceText += pdfData.text;
               console.log(`[pdf-parse] Successfully extracted ${pdfData.text.length} characters from PDF: ${file.originalname}`);
