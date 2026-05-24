@@ -1,0 +1,346 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent-dark);
+}
+
+.countBadge {
+  background-color: rgba(255, 78, 32, 0.1);
+  color: var(--accent-glow);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--accent-muted);
+}
+
+.createBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-dark);
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.createBtn:hover {
+  background-color: var(--accent-dark-hover);
+  transform: translateY(-1px);
+}
+
+/* Card Grid */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.groupCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.groupCard:hover {
+  transform: translateY(-2px);
+  border-color: #CBD5E1;
+  box-shadow: var(--shadow-lg);
+}
+
+.cardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.className {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+.subjectText {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-muted);
+}
+
+.cardMetrics {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.metricBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  background-color: #F3F4F6;
+  color: #4B5563;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.metricBadgeGreen {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+}
+
+/* Circle SVG Widget */
+.circleContainer {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svgCircle {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.circleBg {
+  fill: none;
+  stroke: #F3F4F6;
+  stroke-width: 6;
+}
+
+.circleProgress {
+  fill: none;
+  stroke: var(--accent-glow);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease-in-out;
+}
+
+.circleText {
+  position: absolute;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background-color: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  border-radius: 24px;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+}
+
+.emptyText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.emptyTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+.emptyDesc {
+  font-size: 0.85rem;
+  color: var(--accent-muted);
+  max-width: 320px;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContent {
+  background-color: var(--bg-card);
+  border-radius: 24px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: var(--shadow-premium);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+.closeBtn {
+  color: var(--accent-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.closeBtn:hover {
+  color: var(--accent-dark);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.input, .select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-input);
+  color: var(--accent-dark);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.input:focus, .select:focus {
+  border-color: var(--accent-glow);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.cancelBtn {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  color: var(--accent-dark);
+  font-weight: 700;
+  padding: 0.75rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.cancelBtn:hover {
+  background-color: #F3F4F6;
+}
+
+.submitBtn {
+  flex: 1;
+  background-color: var(--accent-glow);
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: var(--shadow-button-glow);
+  transition: var(--transition-smooth);
+}
+
+.submitBtn:hover {
+  background-color: #E03E15;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

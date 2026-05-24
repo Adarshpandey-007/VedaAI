@@ -1,0 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Typography */
+  --font-primary: 'Outfit', 'Inter', -apple-system, sans-serif;
+  --font-secondary: 'Inter', sans-serif;
+
+  /* Core Surfaces */
+  --bg-app: #F5F6F8;
+  --bg-sidebar: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-input: #F9FAFB;
+  --border-color: #E5E7EB;
+
+  /* Extended Surfaces (for hover states, secondaries, elevated elements) */
+  --surface-hover: #F3F4F6;
+  --surface-secondary: #F8FAFC;
+  --surface-elevated: #FFFFFF;
+  --surface-inset: #F1F5F9;
+
+  /* Accent Palette */
+  --accent-glow: #FF4E20;
+  --accent-glow-rgb: 255, 78, 32;
+  --accent-dark: #111827;
+  --accent-dark-hover: #1F2937;
+  --accent-muted: #6B7280;
+
+  /* Text Colors */
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-tertiary: #475569;
+  --text-on-dark: #F8FAFC;
+
+  /* Border Variants */
+  --border-hover: #CBD5E1;
+  --border-subtle: #E2E8F0;
+
+  /* Status / Difficulty Badges */
+  --badge-easy-bg: #E8F5E9;
+  --badge-easy-text: #2E7D32;
+  --badge-moderate-bg: #FFF3E0;
+  --badge-moderate-text: #EF6C00;
+  --badge-hard-bg: #FFEBEE;
+  --badge-hard-text: #C62828;
+  --badge-success-bg: #E8F5E9;
+  --badge-success-text: #2E7D32;
+  --badge-danger-bg: #FFEBEE;
+  --badge-danger-text: #C62828;
+  --badge-pending-bg: #F1F5F9;
+  --badge-pending-text: #475569;
+  --badge-info-bg: #F0FDF4;
+  --badge-info-border: #BBF7D0;
+  --badge-info-text: #166534;
+
+  /* Overlay & Backdrop */
+  --overlay-bg: rgba(243, 244, 246, 0.95);
+  --modal-backdrop: rgba(15, 23, 42, 0.4);
+
+  /* Scrollbar */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #CBD5E1;
+  --scrollbar-thumb-hover: #94A3B8;
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-button-glow: 0 0 16px rgba(255, 78, 32, 0.25);
+
+  /* Transition Constants */
+  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   DARK MODE — Applied via data-theme attribute on <html>
+   ============================================================ */
+[data-theme="dark"] {
+  /* Core Surfaces */
+  --bg-app: #0B1120;
+  --bg-sidebar: #111827;
+  --bg-card: #1E293B;
+  --bg-input: #1E293B;
+  --border-color: #334155;
+
+  /* Extended Surfaces */
+  --surface-hover: #293548;
+  --surface-secondary: #1E293B;
+  --surface-elevated: #263347;
+  --surface-inset: #1A2332;
+
+  /* Accent */
+  --accent-dark: #F1F5F9;
+  --accent-dark-hover: #E2E8F0;
+  --accent-muted: #94A3B8;
+
+  /* Text Colors */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+  --text-on-dark: #F8FAFC;
+
+  /* Border Variants */
+  --border-hover: #475569;
+  --border-subtle: #334155;
+
+  /* Status Badges (toned for dark bg) */
+  --badge-easy-bg: rgba(46, 125, 50, 0.15);
+  --badge-easy-text: #66BB6A;
+  --badge-moderate-bg: rgba(239, 108, 0, 0.15);
+  --badge-moderate-text: #FFB74D;
+  --badge-hard-bg: rgba(198, 40, 40, 0.15);
+  --badge-hard-text: #EF5350;
+  --badge-success-bg: rgba(46, 125, 50, 0.15);
+  --badge-success-text: #66BB6A;
+  --badge-danger-bg: rgba(198, 40, 40, 0.15);
+  --badge-danger-text: #EF5350;
+  --badge-pending-bg: rgba(71, 85, 105, 0.2);
+  --badge-pending-text: #94A3B8;
+  --badge-info-bg: rgba(34, 197, 94, 0.08);
+  --badge-info-border: rgba(34, 197, 94, 0.25);
+  --badge-info-text: #4ADE80;
+
+  /* Overlay */
+  --overlay-bg: rgba(11, 17, 32, 0.95);
+  --modal-backdrop: rgba(0, 0, 0, 0.6);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748B;
+
+  /* Shadows — deeper in dark mode */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --shadow-button-glow: 0 0 20px rgba(255, 78, 32, 0.35);
+}
+
+/* Base Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-app);
+  color: var(--accent-dark);
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  height: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Layout Utilities */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-left: 280px; /* Sidebar width match */
+  min-width: 0; /* Prevents overflow issues */
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1.5rem;
+    padding-bottom: 6rem; /* Space for mobile nav */
+  }
+}
+
+/* Pulse animation for generating status */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.float-anim {
+  animation: float 3s infinite ease-in-out;
+}
+
+/* Print Overrides */
+@media print {
+  body, html {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-family: 'Times New Roman', serif !important; /* Authentic exam font */
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .app-container {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .printable-paper-card {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  /* Custom input underlines */
+  input[type="text"] {
+    border-bottom: 1px solid #000000 !important;
+    background: transparent !important;
+  }
+}

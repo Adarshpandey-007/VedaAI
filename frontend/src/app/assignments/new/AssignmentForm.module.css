@@ -1,0 +1,535 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  color: var(--accent-dark);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.backLink:hover {
+  transform: translateX(-2px);
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent-dark);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--accent-muted);
+}
+
+/* Progress bar matching Figma slider */
+.progressBarContainer {
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-color);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progressBar {
+  width: 50%; /* Step 1 indicator */
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-glow) 0%, #FFA07A 100%);
+  border-radius: 99px;
+  transition: var(--transition-smooth);
+}
+
+.formCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-premium);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.sectionSubtitle {
+  font-size: 0.85rem;
+  color: var(--accent-muted);
+}
+
+/* File Upload Dotted Zone */
+.uploadZone {
+  border: 2px dashed var(--border-hover);
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: var(--surface-secondary);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  position: relative;
+}
+
+.uploadZoneActive {
+  border-color: var(--accent-glow);
+  background-color: rgba(255, 78, 32, 0.02);
+}
+
+.uploadIcon {
+  color: var(--accent-glow);
+  background-color: rgba(255, 78, 32, 0.08);
+  padding: 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uploadText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.uploadTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+}
+
+.uploadLimits {
+  font-size: 0.75rem;
+  color: var(--accent-muted);
+}
+
+.browseBtn {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.browseBtn:hover {
+  background-color: var(--surface-secondary);
+  border-color: var(--border-hover);
+}
+
+.fileIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--badge-info-bg);
+  border: 1px solid var(--badge-info-border);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+}
+
+.fileName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--badge-info-text);
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.removeFileBtn {
+  color: var(--badge-danger-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.removeFileBtn:hover {
+  color: #7F1D1D;
+  text-decoration: underline;
+}
+
+/* Date picker */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+}
+
+.dateInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dateInput {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--accent-dark);
+  font-weight: 500;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.dateInput:focus {
+  border-color: var(--accent-glow);
+  background-color: var(--surface-elevated);
+  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+}
+
+/* Question Types Section */
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 40px;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--accent-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 40px;
+  gap: 1rem;
+  align-items: center;
+}
+
+.selectInput {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent-dark);
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.selectInput:focus {
+  border-color: var(--accent-glow);
+  background-color: var(--surface-elevated);
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 42px;
+}
+
+.counterBtn {
+  width: 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-muted);
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.counterBtn:hover {
+  background-color: var(--surface-hover);
+  color: var(--accent-dark);
+}
+
+.counterVal {
+  flex: 1;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+}
+
+.deleteBtn {
+  color: var(--accent-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  width: 40px;
+  border-radius: 12px;
+  transition: var(--transition-smooth);
+}
+
+.deleteBtn:hover {
+  background-color: var(--badge-danger-bg);
+  color: var(--badge-danger-text);
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px dashed var(--border-color);
+  width: fit-content;
+  transition: var(--transition-smooth);
+}
+
+.addBtn:hover {
+  background-color: var(--surface-secondary);
+  border-color: var(--border-hover);
+}
+
+/* Totals Aggregate Block */
+.totalsBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--accent-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.totalHighlight {
+  color: var(--accent-dark);
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+/* Additional Info Voice Textarea */
+.textareaWrapper {
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+  height: 100px;
+  padding: 0.8rem 1rem;
+  padding-right: 3rem; /* Room for microphone */
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent-dark);
+  outline: none;
+  resize: none;
+  transition: var(--transition-smooth);
+}
+
+.textarea:focus {
+  border-color: var(--accent-glow);
+  background-color: var(--surface-elevated);
+  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+}
+
+.micIcon {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: var(--accent-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.micIcon:hover {
+  color: var(--accent-glow);
+  transform: scale(1.05);
+}
+
+.micIconActive {
+  color: var(--accent-glow);
+  animation: pulse 1s infinite alternate;
+}
+
+/* Action Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.prevBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-elevated);
+  color: var(--accent-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.prevBtn:hover {
+  background-color: var(--surface-secondary);
+  color: var(--accent-dark);
+}
+
+.nextBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2.25rem;
+  border-radius: 9999px;
+  background-color: var(--accent-dark);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.nextBtn:hover {
+  background-color: var(--accent-dark-hover);
+  transform: translateY(-1px);
+}
+
+/* WebSocket Generation Progress Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--overlay-bg);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.hudCard {
+  background-color: var(--bg-card);
+  border-radius: 32px;
+  box-shadow: var(--shadow-lg);
+  padding: 3rem;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+.hudIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-glow) 0%, #FFA07A 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 30px rgba(255, 78, 32, 0.3);
+}
+
+.hudLoader {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hudProgressContainer {
+  width: 100%;
+  height: 10px;
+  background-color: var(--surface-hover);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.hudProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-glow) 0%, #FFA07A 100%);
+  border-radius: 99px;
+  transition: width 0.4s ease-out;
+}
+
+.hudPercent {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+.hudStatus {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-glow);
+}
+
+.hudSubText {
+  font-size: 0.85rem;
+  color: var(--accent-muted);
+}

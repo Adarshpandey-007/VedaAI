@@ -1,0 +1,257 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent-dark);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--accent-muted);
+}
+
+/* Grid Layout */
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.cardIcon {
+  color: var(--accent-glow);
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.input, .select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-input);
+  color: var(--accent-dark);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.input:focus, .select:focus {
+  border-color: var(--accent-glow);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+}
+
+.passwordInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-input);
+  color: var(--accent-dark);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.passwordInput:focus {
+  border-color: var(--accent-glow);
+  background-color: white;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.passwordToggle:hover {
+  color: var(--accent-dark);
+}
+
+.description {
+  font-size: 0.75rem;
+  color: var(--accent-muted);
+  line-height: 1.4;
+}
+
+/* Theme selector cards grid */
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.themeCard {
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+  background-color: #FAFAFA;
+}
+
+.themeCard:hover {
+  border-color: #CBD5E1;
+  background-color: white;
+}
+
+.themeCardActive {
+  border-color: var(--accent-glow);
+  background-color: white;
+}
+
+.themeMockup {
+  width: 100%;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  padding: 6px;
+  gap: 6px;
+}
+
+.mockupLight {
+  background-color: #F3F4F6;
+  border: 1px solid #E5E7EB;
+}
+
+.mockupDark {
+  background-color: #0F172A;
+  border: 1px solid #1E293B;
+}
+
+.mockupSidebar {
+  width: 25%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.sidebarLight { background-color: white; border: 1px solid #E5E7EB; }
+.sidebarDark { background-color: #1E293B; }
+
+.mockupContent {
+  flex: 1;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.contentLight { background-color: white; }
+.contentDark { background-color: #1E293B; }
+
+.themeName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+/* Footer save bar */
+.saveBar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+.resetBtn {
+  border: 1px solid var(--border-color);
+  color: var(--accent-dark);
+  font-weight: 700;
+  padding: 0.8rem 1.75rem;
+  border-radius: 12px;
+  transition: var(--transition-smooth);
+}
+
+.resetBtn:hover {
+  background-color: #E5E7EB;
+}
+
+.saveBtn {
+  background-color: var(--accent-glow);
+  color: white;
+  font-weight: 700;
+  padding: 0.8rem 2.25rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-button-glow);
+  transition: var(--transition-smooth);
+}
+
+.saveBtn:hover {
+  background-color: #E03E15;
+}
