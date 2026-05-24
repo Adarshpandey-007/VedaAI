@@ -20,6 +20,9 @@ interface AssignmentState {
   fetchQuestionPaper: (assignmentId: string) => Promise<void>;
   fetchToolkitItems: () => Promise<void>;
   addToolkitItem: (item: IToolkitItem) => void;
+  updateQuestionPaper: (assignmentId: string, paper: IQuestionPaper) => Promise<void>;
+  regenerateSingleQuestion: (assignmentId: string, questionId: string) => Promise<void>;
+  updateToolkitItem: (itemId: string, content: string) => Promise<void>;
   
   // Real-time updates via Socket.io
   startGeneration: (assignmentId: string) => void;
@@ -232,5 +235,61 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
     set(state => ({
       toolkitItems: [item, ...state.toolkitItems]
     }));
+  },
+
+  updateQuestionPaper: async (assignmentId: string, paper: IQuestionPaper) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/assignments/${assignmentId}/output`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(paper)
+      });
+      if (!res.ok) throw new Error('Failed to save paper changes.');
+      const data = await res.json();
+      set({ currentPaper: data });
+    } catch (err: any) {
+      console.error('[Zustand] Error saving paper changes:', err);
+      alert(err.message || 'Failed to save paper.');
+    }
+  },
+
+  regenerateSingleQuestion: async (assignmentId: string, questionId: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/assignments/${assignmentId}/regenerate-question`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ questionId })
+      });
+      if (!res.ok) throw new Error('Failed to re-roll question.');
+      const data = await res.json();
+      set({ currentPaper: data });
+    } catch (err: any) {
+      console.error('[Zustand] Error re-rolling question:', err);
+      throw err;
+    }
+  },
+
+  updateToolkitItem: async (itemId: string, content: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/toolkit/${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content })
+      });
+      if (!res.ok) throw new Error('Failed to save toolkit item.');
+      const data = await res.json() as IToolkitItem;
+      set(state => ({
+        toolkitItems: state.toolkitItems.map(item => item.id === itemId ? data : item)
+      }));
+    } catch (err: any) {
+      console.error('[Zustand] Error saving toolkit item:', err);
+      alert(err.message || 'Failed to save edits.');
+    }
   }
 }));

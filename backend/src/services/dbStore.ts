@@ -189,4 +189,43 @@ export class DBStore {
       return newItem;
     }
   }
+
+  public static async updateQuestionPaper(assignmentId: string, qpData: Partial<IQuestionPaper>): Promise<IQuestionPaper | null> {
+    if (this.isConnectedToMongo()) {
+      const qp = await QuestionPaperModel.findOneAndUpdate(
+        { assignmentId },
+        { $set: qpData },
+        { new: true }
+      );
+      return qp ? (qp.toJSON() as IQuestionPaper) : null;
+    } else {
+      const db = await this.getFallbackData();
+      const idx = db.questionPapers.findIndex(q => q.assignmentId === assignmentId);
+      if (idx === -1) return null;
+      db.questionPapers[idx] = {
+        ...db.questionPapers[idx],
+        ...qpData
+      } as IQuestionPaper;
+      await this.writeFallbackData(db);
+      return db.questionPapers[idx];
+    }
+  }
+
+  public static async updateToolkitItem(id: string, updates: Partial<IToolkitItem>): Promise<IToolkitItem | null> {
+    if (this.isConnectedToMongo()) {
+      const item = await ToolkitItemModel.findByIdAndUpdate(id, { $set: updates }, { new: true });
+      return item ? (item.toJSON() as IToolkitItem) : null;
+    } else {
+      const db = await this.getFallbackData();
+      if (!db.toolkitItems) db.toolkitItems = [];
+      const idx = db.toolkitItems.findIndex(i => i.id === id);
+      if (idx === -1) return null;
+      db.toolkitItems[idx] = {
+        ...db.toolkitItems[idx],
+        ...updates
+      } as IToolkitItem;
+      await this.writeFallbackData(db);
+      return db.toolkitItems[idx];
+    }
+  }
 }

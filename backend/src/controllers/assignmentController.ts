@@ -140,4 +140,96 @@ export class AssignmentController {
       return res.status(500).json({ error: 'Failed to delete assignment.' });
     }
   }
+
+  // PUT /api/assignments/:id/output - Save edited question paper
+  public static async updateQuestionPaper(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const updatedPaper = await DBStore.updateQuestionPaper(id, req.body);
+      if (!updatedPaper) {
+        return res.status(404).json({ error: 'Question paper not found.' });
+      }
+      return res.status(200).json(updatedPaper);
+    } catch (error: any) {
+      console.error('[Controller] Error updating question paper:', error);
+      return res.status(500).json({ error: 'Failed to update question paper.' });
+    }
+  }
+
+  // POST /api/assignments/:id/regenerate-question - Re-roll single question
+  public static async regenerateQuestion(req: Request, res: Response) {
+    const { id } = req.params;
+    const { questionId } = req.body;
+
+    if (!questionId) {
+      return res.status(400).json({ error: 'Missing required parameter: questionId' });
+    }
+
+    try {
+      const assignment = await DBStore.getAssignmentById(id);
+      const paper = await DBStore.getQuestionPaperByAssignmentId(id);
+
+      if (!assignment || !paper) {
+        return res.status(404).json({ error: 'Assignment or question paper not found.' });
+      }
+
+      // Find the specific question
+      let targetQ: any = null;
+      let targetSecIdx = -1;
+      let targetQIdx = -1;
+
+      for (let sIdx = 0; sIdx < paper.sections.length; sIdx++) {
+        const sec = paper.sections[sIdx];
+        const qIdx = sec.questions.findIndex(q => q.id === questionId);
+        if (qIdx !== -1) {
+          targetQ = sec.questions[qIdx];
+          targetSecIdx = sIdx;
+          targetQIdx = qIdx;
+          break;
+        }
+      }
+
+      if (!targetQ) {
+        return res.status(404).json({ error: 'Question not found in paper.' });
+      }
+
+      // Re-roll using Gemini
+      const isMcq = !!(targetQ.options && targetQ.options.length > 0);
+      
+      const { AIGeneratorService } = await import('../services/generator');
+      const newQDetails = await AIGeneratorService.regenerateSingleQuestion(
+        assignment,
+        targetQ.text,
+        targetQ.difficulty,
+        targetQ.marks,
+        isMcq
+      );
+
+      // Swap in paper
+      paper.sections[targetSecIdx].questions[targetQIdx] = {
+        ...targetQ,
+        text: newQDetails.text,
+        options: newQDetails.options,
+        answer: newQDetails.answer
+      };
+
+      // Swap in answerKey
+      const keyIdx = paper.answerKey.findIndex(k => k.questionId === questionId);
+      if (keyIdx !== -1) {
+        paper.answerKey[keyIdx] = {
+          questionId,
+          questionText: newQDetails.text,
+          answer: newQDetails.answer
+        };
+      }
+
+      // Save changes back to DB
+      await DBStore.saveQuestionPaper(paper);
+
+      return res.status(200).json(paper);
+    } catch (error: any) {
+      console.error('[Controller] Error re-rolling question:', error);
+      return res.status(500).json({ error: error.message || 'Failed to re-roll question.' });
+    }
+  }
 }

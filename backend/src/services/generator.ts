@@ -368,4 +368,66 @@ Important:
       answerKey
     };
   }
+
+  public static async regenerateSingleQuestion(
+    assignment: IAssignment,
+    questionText: string,
+    difficulty: string,
+    marks: number,
+    isMcq: boolean
+  ): Promise<{ text: string; options?: string[]; answer: string }> {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return {
+        text: `Explain a newly refined key mechanism related to ${assignment.title} (Re-rolled standard question).`,
+        options: isMcq ? ['Option Alpha New', 'Option Beta New', 'Option Gamma New', 'Option Delta New'] : undefined,
+        answer: 'Detailed step-by-step re-rolled answer demonstrating core syllabus mastery.'
+      };
+    }
+
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-3.5-flash',
+        systemInstruction: 'You are an expert exam creator. Your task is to generate a single, professional replacement question for a test. Return ONLY a raw JSON object.'
+      });
+
+      const prompt = `Generate a replacement question for:
+Question: "${questionText}"
+Difficulty: ${difficulty}
+Marks: ${marks}
+Subject: ${assignment.examSubject || 'Syllabus Standard'}
+Topic: ${assignment.title}
+
+Ensure the replacement carries exactly ${marks} marks and is of ${difficulty} difficulty.
+If isMcq is true, you MUST provide exactly 4 options in the options array. Otherwise, do not provide the options key.
+
+The output must match this exact JSON schema:
+{
+  "text": "string (new question text, do not prepend numbers)",
+  "options": ["string"] (provide exactly 4 options only if isMcq is true),
+  "answer": "string (detailed solution key for examiners)"
+}
+Return ONLY the raw JSON object. Do not enclose in markdown block wrappers.`;
+
+      const response = await model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: 'application/json', temperature: 0.8 }
+      });
+
+      let cleanText = response.response.text().trim();
+      if (cleanText.startsWith('```json')) cleanText = cleanText.substring(7);
+      else if (cleanText.startsWith('```')) cleanText = cleanText.substring(3);
+      if (cleanText.endsWith('```')) cleanText = cleanText.substring(0, cleanText.length - 3);
+      
+      return JSON.parse(cleanText.trim());
+    } catch (err) {
+      console.error('[Gemini AI] Single question regeneration failed, falling back to mock:', err);
+      return {
+        text: `Explain a newly refined key mechanism related to ${assignment.title} (Re-rolled standard question fallback).`,
+        options: isMcq ? ['Option Alpha New', 'Option Beta New', 'Option Gamma New', 'Option Delta New'] : undefined,
+        answer: 'Detailed step-by-step re-rolled answer demonstrating core syllabus mastery.'
+      };
+    }
+  }
 }

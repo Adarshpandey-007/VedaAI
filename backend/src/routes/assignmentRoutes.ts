@@ -31,6 +31,8 @@ const upload = multer({
 // Configure API endpoints
 router.get('/', AssignmentController.listAssignments);
 router.get('/:id/output', AssignmentController.getAssignmentOutput);
+router.put('/:id/output', AssignmentController.updateQuestionPaper);
+router.post('/:id/regenerate-question', AssignmentController.regenerateQuestion);
 router.post('/', upload.array('files', 10), AssignmentController.createAssignment); // Up to 10 files
 router.delete('/:id', AssignmentController.deleteAssignment);
 

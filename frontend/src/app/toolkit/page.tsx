@@ -278,10 +278,15 @@ function ToolkitPageContent() {
   const fetchToolkitItems = useAssignmentStore(state => state.fetchToolkitItems);
   const toolkitItems = useAssignmentStore(state => state.toolkitItems);
   const addToolkitItem = useAssignmentStore(state => state.addToolkitItem);
+  const updateToolkitItem = useAssignmentStore(state => state.updateToolkitItem);
 
   const searchParams = useSearchParams();
   const queryTab = searchParams ? searchParams.get('tab') : null;
   const queryId = searchParams ? searchParams.get('id') : null;
+
+  // Toolkit advanced states
+  const [isEditingToolkit, setIsEditingToolkit] = useState(false);
+  const [editedContent, setEditedContent] = useState<string>('');
 
   useEffect(() => {
     fetchToolkitItems();
@@ -295,6 +300,52 @@ function ToolkitPageContent() {
       }
     }
   }, [queryTab, queryId]);
+
+  // Sync edits text when selected saved creation shifts
+  useEffect(() => {
+    const selectedItem = toolkitItems.find(t => t.id === selectedHistoryId);
+    if (selectedItem) {
+      setEditedContent(selectedItem.content);
+    } else {
+      setEditedContent('');
+    }
+    setIsEditingToolkit(false);
+  }, [selectedHistoryId, toolkitItems]);
+
+  const handleExportWordToolkit = (title: string, topic: string, content: string) => {
+    const contentHtml = `
+      <div style="font-family: 'Arial', sans-serif; padding: 20px;">
+        <h1 style="font-size: 24px; color: #ff4e20; border-bottom: 2px solid #ff4e20; padding-bottom: 5px; margin-bottom: 20px;">
+          ${title}: ${topic}
+        </h1>
+        ${parseMarkdownToHTML(content)}
+      </div>
+    `;
+
+    const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+          "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+          "xmlns='http://www.w3.org/TR/REC-html40'>" +
+          "<head><title>Syllabus Outline</title></head><body>";
+    const footer = "</body></html>";
+    const sourceHTML = header + contentHtml + footer;
+    
+    const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+    const fileDownload = document.createElement("a");
+    document.body.appendChild(fileDownload);
+    fileDownload.href = source;
+    fileDownload.download = `${topic.replace(/\s+/g, '_')}_Plan.doc`;
+    fileDownload.click();
+    document.body.removeChild(fileDownload);
+  };
+
+  const handleSaveToolkitEdit = async (itemId: string) => {
+    try {
+      await updateToolkitItem(itemId, editedContent);
+      setIsEditingToolkit(false);
+    } catch (err) {
+      alert('Failed to save changes.');
+    }
+  };
 
   const activeTool = TOOLS.find(t => t.id === activeTab) || TOOLS[0];
 
@@ -337,8 +388,11 @@ function ToolkitPageContent() {
 
       const data = await res.json();
       setOutput(data.content);
+      setEditedContent(data.content);
       if (data.item) {
         addToolkitItem(data.item);
+        setSelectedHistoryId(data.item.id);
+        setActiveTab('history');
       }
     } catch (err: any) {
       console.error(err);
@@ -452,17 +506,61 @@ function ToolkitPageContent() {
                           &larr; Back to Saved List
                         </button>
                         
-                        <div style={{ display: 'flex', gap: '0.75rem' }}>
+                        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                           <button 
                             className={styles.actionBtn} 
                             onClick={() => {
-                              navigator.clipboard.writeText(selectedItem.content);
+                              if (isEditingToolkit) {
+                                handleSaveToolkitEdit(selectedItem.id);
+                              } else {
+                                setIsEditingToolkit(true);
+                                setEditedContent(selectedItem.content);
+                              }
+                            }}
+                            style={{
+                              backgroundColor: isEditingToolkit ? '#22C55E' : 'transparent',
+                              color: isEditingToolkit ? 'white' : 'var(--text-primary)',
+                              borderColor: isEditingToolkit ? '#22C55E' : 'var(--border-color)',
+                              fontWeight: 800
+                            }}
+                          >
+                            <Check size={14} style={{ color: isEditingToolkit ? 'white' : 'var(--accent-glow)' }} />
+                            <span>{isEditingToolkit ? 'Save Outline' : 'Edit Outline'}</span>
+                          </button>
+
+                          {isEditingToolkit && (
+                            <button 
+                              className={styles.actionBtn} 
+                              onClick={() => {
+                                setIsEditingToolkit(false);
+                                setEditedContent(selectedItem.content);
+                              }}
+                              style={{ color: 'var(--text-primary)' }}
+                            >
+                              Cancel
+                            </button>
+                          )}
+
+                          <button 
+                            className={styles.actionBtn}
+                            onClick={() => handleExportWordToolkit(selectedItem.title, selectedItem.topic, isEditingToolkit ? editedContent : selectedItem.content)}
+                            style={{ color: 'var(--text-primary)' }}
+                          >
+                            <Copy size={14} />
+                            <span>Export to Word</span>
+                          </button>
+
+                          <button 
+                            className={styles.actionBtn} 
+                            onClick={() => {
+                              navigator.clipboard.writeText(isEditingToolkit ? editedContent : selectedItem.content);
                               setCopied(true);
                               setTimeout(() => setCopied(false), 2000);
                             }}
+                            style={{ color: 'var(--text-primary)' }}
                           >
                             {copied ? <Check size={14} style={{ color: '#22C55E' }} /> : <Copy size={14} />}
-                            <span>{copied ? 'Copied!' : 'Copy'}</span>
+                            <span>{copied ? 'Copied!' : 'Copy RAW'}</span>
                           </button>
                           
                           <button 
@@ -484,20 +582,21 @@ function ToolkitPageContent() {
                                     </style>
                                   </head>
                                   <body>
-                                    ${parseMarkdownToHTML(selectedItem.content)}
+                                    ${parseMarkdownToHTML(isEditingToolkit ? editedContent : selectedItem.content)}
                                   </body>
                                 </html>
                               `);
                               printWindow.document.close();
                               printWindow.print();
                             }}
+                            style={{ color: 'var(--text-primary)' }}
                           >
                             <Printer size={14} />
                             <span>Print Outline</span>
                           </button>
                         </div>
                       </div>
-
+ 
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                         <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--accent-glow)' }}>
                           {selectedItem.type === 'lesson' ? 'Lesson Plan' : selectedItem.type === 'rubric' ? 'Rubric Matrix' : 'Classroom Activity'}
@@ -509,10 +608,43 @@ function ToolkitPageContent() {
                           Grade: <strong>{selectedItem.grade}</strong> | Created: {new Date(selectedItem.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-
-                      <div className={styles.contentDisplay} style={{ maxHeight: 'none' }}>
-                        {parseMarkdownToReact(selectedItem.content)}
-                      </div>
+ 
+                      {isEditingToolkit ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', width: '100%', minHeight: '450px' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)' }}>📝 MARKDOWN EDITOR</label>
+                            <textarea 
+                              value={editedContent}
+                              onChange={e => setEditedContent(e.target.value)}
+                              style={{ 
+                                width: '100%', 
+                                flex: 1, 
+                                minHeight: '480px',
+                                padding: '1rem', 
+                                border: '1px solid var(--border-color)', 
+                                borderRadius: '16px', 
+                                background: 'var(--bg-input)', 
+                                color: 'var(--text-primary)', 
+                                fontFamily: 'monospace', 
+                                fontSize: '0.9rem',
+                                resize: 'vertical',
+                                lineHeight: '1.6',
+                                outline: 'none'
+                              }}
+                            />
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)' }}>✨ LIVE REACT PREVIEW</label>
+                            <div className={styles.contentDisplay} style={{ flex: 1, minHeight: '480px', maxHeight: '550px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: '16px', padding: '1.25rem', backgroundColor: 'var(--surface-elevated)' }}>
+                              {parseMarkdownToReact(editedContent)}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className={styles.contentDisplay} style={{ maxHeight: 'none' }}>
+                          {parseMarkdownToReact(selectedItem.content)}
+                        </div>
+                      )}
                     </div>
                   );
                 }

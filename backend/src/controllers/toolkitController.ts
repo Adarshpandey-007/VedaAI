@@ -202,4 +202,25 @@ For a class of 30 students (organized in 6 groups of 5):
       return res.status(500).json({ error: 'Failed to retrieve toolkit items.' });
     }
   }
+
+  // PUT /api/toolkit/:id - Update toolkit item content
+  public static async updateResource(req: Request, res: Response) {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    if (!content) {
+      return res.status(400).json({ error: 'Missing required parameter: content' });
+    }
+
+    try {
+      const updatedItem = await DBStore.updateToolkitItem(id, { content });
+      if (!updatedItem) {
+        return res.status(404).json({ error: 'Toolkit item not found.' });
+      }
+      return res.status(200).json(updatedItem);
+    } catch (error: any) {
+      console.error('[Toolkit API] Error updating toolkit item:', error);
+      return res.status(500).json({ error: 'Failed to update toolkit item.' });
+    }
+  }
 }
