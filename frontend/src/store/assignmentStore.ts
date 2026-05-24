@@ -125,13 +125,14 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
     try {
       const res = await fetch(`${API_BASE}/api/assignments/${assignmentId}/output`);
       if (!res.ok) {
-        throw new Error('Question paper has not completed generation yet.');
+        set({ currentPaper: null, error: 'Question paper has not completed generation yet.' });
+        return;
       }
       const data = await res.json();
-      set({ currentPaper: data });
+      set({ currentPaper: data, error: null });
     } catch (err: any) {
-      console.error(err);
-      set({ currentPaper: null, error: err.message || 'Failed to fetch paper.' });
+      console.warn('[Zustand] Syncing paper failed:', err?.message || err);
+      set({ currentPaper: null, error: 'Question paper has not completed generation yet.' });
     }
   },
 
