@@ -77,10 +77,22 @@ export default function QuestionPaperOutputPage() {
     let contentHtml = `
       <div style="text-align: center; margin-bottom: 20px;">
         <h1 style="font-size: 26px; margin: 0; font-family: 'Arial', sans-serif;">${currentPaper.schoolName}</h1>
-        <p style="font-size: 16px; font-weight: bold; margin: 5px 0;">Subject: ${currentPaper.subject} | ${currentPaper.gradeClass}</p>
+        <p style="font-size: 16px; font-weight: bold; margin: 5px 0;">Subject: ${currentPaper.subject}</p>
         <p style="font-size: 14px; margin: 5px 0;">Time Allowed: ${currentPaper.timeAllowed} | Max Marks: ${currentPaper.maxMarks}</p>
         <hr style="border: 1px solid #000000; margin-top: 15px;" />
       </div>
+      
+      <table style="width: 100%; border: 1px solid #94a3b8; border-collapse: collapse; margin-bottom: 20px; font-family: 'Arial', sans-serif; font-size: 12px; background-color: #f8fafc;">
+        <tr>
+          <td style="width: 50%; padding: 8px; border: 1px solid #e2e8f0;"><strong>Name:</strong> ___________________________________</td>
+          <td style="width: 50%; padding: 8px; border: 1px solid #e2e8f0;"><strong>Roll Number:</strong> ___________________________</td>
+        </tr>
+        <tr>
+          <td style="width: 50%; padding: 8px; border: 1px solid #e2e8f0;"><strong>Class:</strong> ${currentPaper.gradeClass}</td>
+          <td style="width: 50%; padding: 8px; border: 1px solid #e2e8f0;"><strong>Section:</strong> _________________________________</td>
+        </tr>
+      </table>
+
       <p style="text-align: right; font-style: italic; font-size: 12px; margin-bottom: 20px;">All questions are compulsory.</p>
     `;
 
@@ -370,8 +382,12 @@ export default function QuestionPaperOutputPage() {
             <span>Roll Number:</span>
             <input type="text" className={styles.underlineInput} disabled />
           </div>
-          <div className={styles.field} style={{ gridColumn: 'span 2' }}>
+          <div className={styles.field}>
             <span>Class: {isEditMode ? editedPaper?.gradeClass : currentPaper.gradeClass}</span>
+          </div>
+          <div className={styles.field}>
+            <span>Section:</span>
+            <input type="text" className={styles.underlineInput} disabled />
           </div>
         </div>
 

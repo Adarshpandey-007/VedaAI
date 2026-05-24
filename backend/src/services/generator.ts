@@ -187,18 +187,17 @@ Important:
           reportProgress(45, 'Loading reference files and images into AI...');
           const fs = require('fs/promises');
           for (const file of uploadedFiles) {
-            // Only attach supported multimodal files (images and PDFs)
+            // Only attach image files as inlineData (PDF text has already been fully extracted to prompt)
             const isImage = file.mimetype.startsWith('image/');
-            const isPdf = file.mimetype === 'application/pdf' || file.path.endsWith('.pdf');
             
-            if (isImage || isPdf) {
+            if (isImage) {
               try {
                 console.log(`[Gemini AI] Loading multimodal attachment: ${file.path} (${file.mimetype})`);
                 const dataBuffer = await fs.readFile(file.path);
                 parts.push({
                   inlineData: {
                     data: dataBuffer.toString('base64'),
-                    mimeType: isPdf ? 'application/pdf' : file.mimetype
+                    mimeType: file.mimetype
                   }
                 });
               } catch (readErr) {

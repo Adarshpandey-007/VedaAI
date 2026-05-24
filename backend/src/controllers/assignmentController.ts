@@ -89,9 +89,21 @@ export class AssignmentController {
             } catch (readErr) {
               console.error('[Multer] Failed to read uploaded text file:', readErr);
             }
+          } else if (file.mimetype === 'application/pdf' || file.originalname.endsWith('.pdf')) {
+            try {
+              const pdfParse = require('pdf-parse');
+              const dataBuffer = await fs.readFile(file.path);
+              const pdfData = await pdfParse(dataBuffer);
+              sourceText += `\n\n--- Extracted Text from PDF: ${file.originalname} ---\n`;
+              sourceText += pdfData.text;
+              console.log(`[pdf-parse] Successfully extracted ${pdfData.text.length} characters from PDF: ${file.originalname}`);
+            } catch (pdfErr) {
+              console.error(`[pdf-parse] Failed to parse PDF ${file.originalname}:`, pdfErr);
+              sourceText += `\n\n--- Content from PDF: ${file.originalname} ---\nNote: The PDF parser encountered an error. Please base questions on ${title}.\n`;
+            }
           } else {
-             // Let Gemini 1.5 handle image processing natively, but give a hint
-             sourceText += `\n\n--- Content from ${file.originalname} ---\nNote: The user uploaded an image/PDF. Please thoroughly extract visual/textual information from it to formulate the test questions accurately about ${title}.\n`;
+             // Let Gemini handle image processing natively, but give a hint
+             sourceText += `\n\n--- Content from ${file.originalname} ---\nNote: The user uploaded an image. Please thoroughly extract visual/textual information from it to formulate the test questions accurately about ${title}.\n`;
           }
         }
       }

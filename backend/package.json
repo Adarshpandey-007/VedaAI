@@ -17,6 +17,7 @@
     "ioredis": "^5.4.1",
     "mongoose": "^8.4.0",
     "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^2.4.5",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
