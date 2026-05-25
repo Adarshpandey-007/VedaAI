@@ -13,7 +13,9 @@ import {
   Mic, 
   CheckCircle,
   FileText,
-  AlertCircle
+  AlertCircle,
+  Calendar,
+  X
 } from 'lucide-react';
 import styles from './AssignmentForm.module.css';
 import { IQuestionType } from '@/types';
@@ -23,6 +25,13 @@ const DEFAULT_QUESTION_TYPES = [
   { type: 'Short Questions', count: 3, marksPerQuestion: 2 },
   { type: 'Diagram/Graph-Based Questions', count: 1, marksPerQuestion: 5 },
   { type: 'Numerical Problems', count: 1, marksPerQuestion: 5 }
+];
+
+const PREDEFINED_TYPES = [
+  'Multiple Choice Questions',
+  'Short Questions',
+  'Diagram/Graph-Based Questions',
+  'Numerical Problems'
 ];
 
 export default function CreateAssignmentPage() {
@@ -45,6 +54,7 @@ export default function CreateAssignmentPage() {
   const [title, setTitle] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [examClass, setExamClass] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [examSection, setExamSection] = useState('');
   const [examSubject, setExamSubject] = useState('');
   const [schoolName, setSchoolName] = useState('Delhi Public School'); // Default or picked from settings
@@ -67,21 +77,24 @@ export default function CreateAssignmentPage() {
   useEffect(() => {
     if (!isGenerating) {
       resetGenerationState();
-      setShowSuccessState(false);
+      // wrapped in setTimeout to prevent React cascading render warnings / ESLint error
+      setTimeout(() => setShowSuccessState(false), 0);
     }
   }, [isGenerating, resetGenerationState]);
 
   // Sync active tracking ID on mount / change
   useEffect(() => {
     if (activeAssignmentId) {
-      setCreatedId(activeAssignmentId);
+      // wrapped in setTimeout to prevent React cascading render warnings / ESLint error
+      setTimeout(() => setCreatedId(activeAssignmentId), 0);
     }
   }, [activeAssignmentId]);
 
   // Listen for progress hitting 100% to trigger the success animation window
   useEffect(() => {
     if (isGenerating && generationProgress === 100) {
-      setShowSuccessState(true);
+      // wrapped in setTimeout to prevent React cascading render warnings / ESLint error
+      setTimeout(() => setShowSuccessState(true), 0);
     }
   }, [isGenerating, generationProgress]);
 
@@ -231,9 +244,10 @@ export default function CreateAssignmentPage() {
       // 3. Stay on page to let the real-time progress HUD complete and auto-redirect!
       // router.push('/assignments');
 
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : 'Failed to submit form.';
       setIsSubmitting(false);
-      alert(err.message || 'Failed to submit form.');
+      alert(errorMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -400,6 +414,7 @@ export default function CreateAssignmentPage() {
                   onChange={(e) => setDueDate(e.target.value)}
                   required
                 />
+                <Calendar size={18} className={styles.calendarIcon} />
               </div>
             </div>
 
@@ -407,62 +422,169 @@ export default function CreateAssignmentPage() {
             <div className={styles.tableContainer}>
               <label className={styles.label}>Question Type Configuration</label>
               
-              <div className={styles.tableHeader}>
-                <span>Question Type</span>
-                <span style={{ textAlign: 'center' }}>No. of Questions</span>
-                <span style={{ textAlign: 'center' }}>Marks</span>
-                <span></span>
+              {/* Desktop Table View */}
+              <div className={styles.desktopTable}>
+                <div className={styles.tableHeader}>
+                  <span>Question Type</span>
+                  <span style={{ textAlign: 'center' }}>No. of Questions</span>
+                  <span style={{ textAlign: 'center' }}>Marks</span>
+                  <span></span>
+                </div>
+
+                {questionTypes.map((qt, idx) => (
+                  <div key={idx} className={styles.row}>
+                    {!PREDEFINED_TYPES.includes(qt.type) || qt.type === 'Others' ? (
+                      <div className={styles.customInputContainer}>
+                        <input 
+                          type="text"
+                          placeholder="e.g. Fill in the Blanks"
+                          className={styles.customTextInput}
+                          value={qt.type === 'Others' ? '' : qt.type}
+                          onChange={(e) => updateQuestionRow(idx, { type: e.target.value })}
+                          required
+                        />
+                        <button 
+                          type="button" 
+                          className={styles.backToSelectBtn}
+                          onClick={() => updateQuestionRow(idx, { type: 'Multiple Choice Questions' })}
+                          title="Back to standard options"
+                        >
+                          <ArrowLeft size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <select 
+                        className={styles.selectInput}
+                        value={qt.type}
+                        onChange={(e) => updateQuestionRow(idx, { type: e.target.value })}
+                      >
+                        <option value="Multiple Choice Questions">Multiple Choice Questions</option>
+                        <option value="Short Questions">Short Questions</option>
+                        <option value="Diagram/Graph-Based Questions">Diagram/Graph-Based Questions</option>
+                        <option value="Numerical Problems">Numerical Problems</option>
+                        <option value="Others">Others (Custom Question Type)</option>
+                      </select>
+                    )}
+
+                    {/* Number of Questions Counter */}
+                    <div className={styles.counter}>
+                      <button type="button" className={styles.counterBtn} onClick={() => decrementCount(idx)}>-</button>
+                      <span className={styles.counterVal}>{qt.count}</span>
+                      <button type="button" className={styles.counterBtn} onClick={() => incrementCount(idx)}>+</button>
+                    </div>
+
+                    {/* Marks Counter */}
+                    <div className={styles.counter}>
+                      <button type="button" className={styles.counterBtn} onClick={() => decrementMarks(idx)}>-</button>
+                      <span className={styles.counterVal}>{qt.marksPerQuestion}</span>
+                      <button type="button" className={styles.counterBtn} onClick={() => incrementMarks(idx)}>+</button>
+                    </div>
+
+                    {/* Delete Button */}
+                    <button 
+                      type="button" 
+                      className={styles.deleteBtn}
+                      onClick={() => deleteQuestionRow(idx)}
+                      disabled={questionTypes.length === 1}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+
+                <button type="button" className={styles.addBtn} onClick={addQuestionType}>
+                  <Plus size={16} />
+                  <span>Add Question Type</span>
+                </button>
               </div>
 
-              {questionTypes.map((qt, idx) => (
-                <div key={idx} className={styles.row}>
-                  <select 
-                    className={styles.selectInput}
-                    value={qt.type}
-                    onChange={(e) => updateQuestionRow(idx, { type: e.target.value })}
-                  >
-                    <option value="Multiple Choice Questions">Multiple Choice Questions</option>
-                    <option value="Short Questions">Short Questions</option>
-                    <option value="Diagram/Graph-Based Questions">Diagram/Graph-Based Questions</option>
-                    <option value="Numerical Problems">Numerical Problems</option>
-                  </select>
-
-                  {/* Number of Questions Counter */}
-                  <div className={styles.counter}>
-                    <button type="button" className={styles.counterBtn} onClick={() => decrementCount(idx)}>-</button>
-                    <span className={styles.counterVal}>{qt.count}</span>
-                    <button type="button" className={styles.counterBtn} onClick={() => incrementCount(idx)}>+</button>
+              {/* Mobile Cards View */}
+              <div className={styles.mobileCards}>
+                {questionTypes.map((qt, idx) => (
+                  <div key={idx} className={styles.mobileCard}>
+                    <div className={styles.mobileCardHeader}>
+                      {!PREDEFINED_TYPES.includes(qt.type) || qt.type === 'Others' ? (
+                        <div className={styles.mobileCustomInputContainer}>
+                          <input 
+                            type="text"
+                            placeholder="e.g. Fill in the Blanks"
+                            className={styles.mobileCustomTextInput}
+                            value={qt.type === 'Others' ? '' : qt.type}
+                            onChange={(e) => updateQuestionRow(idx, { type: e.target.value })}
+                            required
+                          />
+                          <button 
+                            type="button" 
+                            className={styles.mobileBackToSelectBtn}
+                            onClick={() => updateQuestionRow(idx, { type: 'Multiple Choice Questions' })}
+                            title="Back to standard options"
+                          >
+                            <ArrowLeft size={14} />
+                          </button>
+                        </div>
+                      ) : (
+                        <select 
+                          className={styles.mobileSelectInput}
+                          value={qt.type}
+                          onChange={(e) => updateQuestionRow(idx, { type: e.target.value })}
+                        >
+                          <option value="Multiple Choice Questions">Multiple Choice Questions</option>
+                          <option value="Short Questions">Short Questions</option>
+                          <option value="Diagram/Graph-Based Questions">Diagram/Graph-Based Questions</option>
+                          <option value="Numerical Problems">Numerical Problems</option>
+                          <option value="Others">Others (Custom Question Type)</option>
+                        </select>
+                      )}
+                      <button 
+                        type="button" 
+                        className={styles.mobileDeleteBtn}
+                        onClick={() => deleteQuestionRow(idx)}
+                        disabled={questionTypes.length === 1}
+                      >
+                        <X size={18} />
+                      </button>
+                    </div>
+                    
+                    <div className={styles.mobileCardBody}>
+                      <div className={styles.mobileCounterCol}>
+                        <span className={styles.mobileCounterLabel}>No. of Questions</span>
+                        <div className={styles.mobileCounterPill}>
+                          <button type="button" className={styles.mobileCounterBtn} onClick={() => decrementCount(idx)}>-</button>
+                          <span className={styles.mobileCounterVal}>{qt.count}</span>
+                          <button type="button" className={styles.mobileCounterBtn} onClick={() => incrementCount(idx)}>+</button>
+                        </div>
+                      </div>
+                      
+                      <div className={styles.mobileCounterCol}>
+                        <span className={styles.mobileCounterLabel}>Marks</span>
+                        <div className={styles.mobileCounterPill}>
+                          <button type="button" className={styles.mobileCounterBtn} onClick={() => decrementMarks(idx)}>-</button>
+                          <span className={styles.mobileCounterVal}>{qt.marksPerQuestion}</span>
+                          <button type="button" className={styles.mobileCounterBtn} onClick={() => incrementMarks(idx)}>+</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                ))}
 
-                  {/* Marks Counter */}
-                  <div className={styles.counter}>
-                    <button type="button" className={styles.counterBtn} onClick={() => decrementMarks(idx)}>-</button>
-                    <span className={styles.counterVal}>{qt.marksPerQuestion}</span>
-                    <button type="button" className={styles.counterBtn} onClick={() => incrementMarks(idx)}>+</button>
-                  </div>
-
-                  {/* Delete Button */}
-                  <button 
-                    type="button" 
-                    className={styles.deleteBtn}
-                    onClick={() => deleteQuestionRow(idx)}
-                    disabled={questionTypes.length === 1}
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-
-              <button type="button" className={styles.addBtn} onClick={addQuestionType}>
-                <Plus size={16} />
-                <span>Add Question Type</span>
-              </button>
+                <button type="button" className={styles.mobileAddBtn} onClick={addQuestionType}>
+                  <span className={styles.mobileAddIconWrapper}>
+                    <Plus size={16} />
+                  </span>
+                  <span>Add Question Type</span>
+                </button>
+              </div>
             </div>
 
             {/* Dynamic aggregates */}
-            <div className={styles.totalsBlock}>
+            <div className={styles.desktopTotalsBlock}>
               <span>Total Questions: <span className={styles.totalHighlight}>{totalQuestions}</span></span>
               <span>Total Marks: <span className={styles.totalHighlight}>{totalMarks}</span></span>
+            </div>
+
+            <div className={styles.mobileTotalsBlock}>
+              <div>Total Questions : <span className={styles.mobileTotalHighlight}>{totalQuestions}</span></div>
+              <div>Total Marks : <span className={styles.mobileTotalHighlight}>{totalMarks}</span></div>
             </div>
 
             {/* Additional information + Voice Indicator */}

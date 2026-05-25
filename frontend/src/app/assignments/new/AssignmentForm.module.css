@@ -793,3 +793,365 @@
   color: var(--text-tertiary);
 }
 
+/* ─── Desktop and Mobile Responsive Blocks ────────────────── */
+
+.desktopTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.mobileCards {
+  display: none;
+}
+
+.calendarIcon {
+  display: none;
+}
+
+.desktopTotalsBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--accent-glow-light);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.mobileTotalsBlock {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktopTable {
+    display: none !important;
+  }
+
+  .desktopTotalsBlock {
+    display: none !important;
+  }
+
+  .mobileCards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .mobileTotalsBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .mobileTotalHighlight {
+    color: var(--text-primary);
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-left: 0.25rem;
+  }
+
+  /* Due Date Mobile Field Enhancement */
+  .calendarIcon {
+    display: block;
+    position: absolute;
+    right: 1rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+  }
+
+  /* Due date native picker transparent overlay click trick */
+  .dateInput::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+    cursor: pointer;
+    z-index: 2;
+  }
+  
+  .dateInputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-card);
+  }
+
+  .dateInput {
+    padding: 0.75rem 1rem;
+    padding-right: 2.75rem; /* Space for the calendar icon */
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card); /* White input background like in mockup */
+    font-size: 0.95rem;
+  }
+
+  /* Card Layout for Mobile Question Configuration */
+  .mobileCard {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: var(--transition-smooth);
+  }
+
+  .mobileCardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .mobileSelectInput {
+    flex-grow: 1;
+    max-width: calc(100% - 32px);
+    padding: 0.6rem 0.75rem;
+    border: 1px solid transparent;
+    background-color: transparent;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233D4559' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    background-size: 1.1rem;
+    padding-right: 1.75rem;
+  }
+
+  .mobileSelectInput:focus {
+    color: var(--accent-glow);
+  }
+
+  .mobileDeleteBtn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .mobileDeleteBtn:hover {
+    background-color: var(--badge-danger-bg);
+    color: var(--badge-danger-text);
+  }
+
+  .mobileCardBody {
+    background-color: var(--surface-secondary); /* Grey background for inner columns */
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns for No of Questions and Marks */
+    gap: 1rem;
+  }
+
+  .mobileCounterCol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: center;
+  }
+
+  .mobileCounterLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: capitalize;
+  }
+
+  .mobileCounterPill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFFFFF; /* White pill container inside the grey block */
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-color);
+    padding: 0.2rem;
+    width: 100%;
+    max-width: 110px;
+    height: 34px;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .mobileCounterBtn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+  }
+
+  .mobileCounterBtn:active {
+    background-color: var(--surface-hover);
+  }
+
+  .mobileCounterVal {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    user-select: none;
+  }
+
+  /* Add Question Type Mobile Button Styling */
+  .mobileAddBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.65rem 0;
+    background: transparent;
+    border: none;
+    width: fit-content;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    margin-top: 0.25rem;
+  }
+
+  .mobileAddIconWrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #0F172A; /* Black circle icon wrapper */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-bounce);
+  }
+
+  .mobileAddBtn:active .mobileAddIconWrapper {
+    transform: scale(0.9);
+  }
+
+  /* Mobile Custom Question Type Input */
+  .mobileCustomInputContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-grow: 1;
+    max-width: calc(100% - 32px);
+  }
+
+  .mobileCustomTextInput {
+    flex-grow: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-input);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-smooth);
+  }
+
+  .mobileCustomTextInput:focus {
+    border-color: var(--accent-glow);
+  }
+
+  .mobileBackToSelectBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+  }
+
+  .mobileBackToSelectBtn:active {
+    background-color: var(--surface-hover);
+  }
+}
+
+/* Desktop Custom Question Type Input */
+.customInputContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.customTextInput {
+  flex-grow: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.customTextInput:focus {
+  border-color: var(--accent-glow);
+  background-color: var(--surface-elevated);
+  box-shadow: 0 0 0 3px var(--border-focus);
+}
+
+.backToSelectBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-elevated);
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+.backToSelectBtn:hover {
+  background-color: var(--surface-hover);
+  color: var(--accent-glow);
+  border-color: var(--border-hover);
+}
+

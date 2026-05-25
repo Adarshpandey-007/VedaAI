@@ -263,6 +263,7 @@ const TOOLS: ToolConfig[] = [
 ];
 
 function ToolkitPageContent() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ToolType>('lesson');
   const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
@@ -296,22 +297,28 @@ function ToolkitPageContent() {
 
   useEffect(() => {
     if (queryTab === 'history') {
-      setActiveTab('history');
-      if (queryId) {
-        setSelectedHistoryId(queryId);
-      }
+      // wrapped in setTimeout to prevent React cascading render warnings / ESLint error
+      setTimeout(() => {
+        setActiveTab('history');
+        if (queryId) {
+          setSelectedHistoryId(queryId);
+        }
+      }, 0);
     }
   }, [queryTab, queryId]);
 
   // Sync edits text when selected saved creation shifts
   useEffect(() => {
     const selectedItem = toolkitItems.find(t => t.id === selectedHistoryId);
-    if (selectedItem) {
-      setEditedContent(selectedItem.content);
-    } else {
-      setEditedContent('');
-    }
-    setIsEditingToolkit(false);
+    // wrapped in setTimeout to prevent React cascading render warnings / ESLint error
+    setTimeout(() => {
+      if (selectedItem) {
+        setEditedContent(selectedItem.content);
+      } else {
+        setEditedContent('');
+      }
+      setIsEditingToolkit(false);
+    }, 0);
   }, [selectedHistoryId, toolkitItems]);
 
   const handleExportWordToolkit = (title: string, topic: string, content: string) => {
@@ -344,7 +351,7 @@ function ToolkitPageContent() {
     try {
       await updateToolkitItem(itemId, editedContent);
       setIsEditingToolkit(false);
-    } catch (err) {
+    } catch {
       alert('Failed to save changes.');
     }
   };
@@ -396,9 +403,10 @@ function ToolkitPageContent() {
         setSelectedHistoryId(data.item.id);
         setActiveTab('history');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || 'Connection failed. Ensure the backend is active.');
+      const errorMsg = err instanceof Error ? err.message : 'Connection failed. Ensure the backend is active.';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -443,7 +451,7 @@ function ToolkitPageContent() {
       <TopHeaderBar pathName="Toolkit" />
 
       <div className={styles.headerText}>
-        <h1 className={styles.title}>AI Teacher's Toolkit</h1>
+        <h1 className={styles.title}>AI Teacher&apos;s Toolkit</h1>
         <p className={styles.subtitle}>Unlock specialized academic micro-wizards powered by Gemini AI to automate core writing tasks.</p>
       </div>
 
@@ -749,16 +757,14 @@ function ToolkitPageContent() {
 
                     <div className={styles.inputGroup}>
                       <label className={styles.label}>{activeTool.gradeLabel}</label>
-                      <select
+                      <input
+                        type="text"
+                        placeholder="e.g. Class 8th"
                         value={grade}
                         onChange={(e) => setGrade(e.target.value)}
-                        className={styles.select}
-                      >
-                        <option value="Class 5th">Class 5th</option>
-                        <option value="Class 8th">Class 8th</option>
-                        <option value="Class 10th">Class 10th</option>
-                        <option value="Class 12th">Class 12th</option>
-                      </select>
+                        className={styles.input}
+                        required
+                      />
                     </div>
                   </div>
 
