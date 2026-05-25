@@ -239,7 +239,8 @@ export default function QuestionPaperOutputPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <>
+      <div className={styles.container}>
       {/* breadcrumb */}
       <div className={`${styles.header} no-print`}>
         <Link href="/assignments" className={styles.backBtn}>
@@ -606,8 +607,9 @@ export default function QuestionPaperOutputPage() {
         </div>
 
       </div>
+    </div>
 
-      {/* Premium Print Modal */}
+      {/* Premium Print Modal (Placed as a sibling to styles.container to break free from animated transform context and center perfectly) */}
       {showPrintModal && (
         <div className="no-print" style={{
           position: 'fixed',
@@ -615,16 +617,17 @@ export default function QuestionPaperOutputPage() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(15, 23, 42, 0.6)',
-          backdropFilter: 'blur(8px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 9999,
+          zIndex: 99999,
           padding: '1.5rem'
         }}>
           <div style={{
-            backgroundColor: '#FFFFFF',
+            backgroundColor: 'var(--bg-card)',
             borderRadius: '24px',
             padding: '2.5rem',
             maxWidth: '450px',
@@ -638,8 +641,8 @@ export default function QuestionPaperOutputPage() {
           }}>
             <div style={{ fontSize: '3rem' }}>🖨️</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <h3 style={{ fontFamily: 'var(--font-primary)', fontSize: '1.4rem', fontWeight: 800, color: '#0F172A' }}>Print Preferences</h3>
-              <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: '1.5' }}>Would you like to print this question paper with the Answer Key and solutions included for the examiners?</p>
+              <h3 style={{ fontFamily: 'var(--font-primary)', fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>Print Preferences</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>Would you like to print this question paper with the Answer Key and solutions included for the examiners?</p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
@@ -664,8 +667,8 @@ export default function QuestionPaperOutputPage() {
               <button 
                 onClick={() => triggerPrint(false)}
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  color: '#1E293B',
+                  backgroundColor: 'var(--surface-secondary)',
+                  color: 'var(--text-primary)',
                   fontWeight: 700,
                   fontSize: '0.95rem',
                   padding: '0.9rem 1.5rem',
@@ -682,7 +685,7 @@ export default function QuestionPaperOutputPage() {
             <button 
               onClick={() => setShowPrintModal(false)}
               style={{
-                color: '#64748B',
+                color: 'var(--text-tertiary)',
                 fontWeight: 600,
                 fontSize: '0.85rem',
                 textDecoration: 'underline',
@@ -697,7 +700,6 @@ export default function QuestionPaperOutputPage() {
           </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 }
