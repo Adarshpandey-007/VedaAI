@@ -47,6 +47,8 @@ const STATIC_TEMPLATES: ILibraryItem[] = [
   }
 ];
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
 export default function LibraryPage() {
   const assignments = useAssignmentStore(state => state.assignments);
   const deleteAssignment = useAssignmentStore(state => state.deleteAssignment);
@@ -89,7 +91,9 @@ export default function LibraryPage() {
           type: 'Reference Notes',
           dateSaved: new Date(a.createdAt).toLocaleDateString('en-US'),
           size: 'Uploaded PDF/TXT',
-          actionUrl: a.fileUrl || '#',
+          actionUrl: a.fileUrl 
+            ? (a.fileUrl.startsWith('http') ? a.fileUrl : `${BACKEND_URL}${a.fileUrl}`) 
+            : '#',
           isCustomUpload: true
         });
       }
