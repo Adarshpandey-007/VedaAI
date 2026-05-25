@@ -24,38 +24,37 @@ export default function SettingsPage() {
   // Banner status
   const [saved, setSaved] = useState(false);
 
+  const applyTheme = (targetTheme: 'light' | 'dark') => {
+    document.documentElement.setAttribute('data-theme', targetTheme);
+  };
+
   useEffect(() => {
     // 1. Hydrate school info
     const savedSchool = localStorage.getItem('veda_school_name');
     const savedLoc = localStorage.getItem('veda_school_location');
-    if (savedSchool) setSchoolName(savedSchool);
-    if (savedLoc) setSectionLoc(savedLoc);
-
-    function setSectionLoc(val: string) {
-      setSchoolLocation(val);
-    }
-
+    
     // 2. Hydrate Custom API Key override
     const savedKey = localStorage.getItem('veda_user_api_key');
-    if (savedKey) setApiKey(savedKey);
 
     // 3. Hydrate defaults
     const savedTime = localStorage.getItem('veda_default_time');
     const savedClass = localStorage.getItem('veda_default_class');
-    if (savedTime) setDefaultTime(parseInt(savedTime));
-    if (savedClass) setDefaultClass(savedClass);
 
     // 4. Hydrate theme
     const savedTheme = localStorage.getItem('veda_theme') as 'light' | 'dark' | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      applyTheme(savedTheme);
-    }
-  }, []);
 
-  const applyTheme = (targetTheme: 'light' | 'dark') => {
-    document.documentElement.setAttribute('data-theme', targetTheme);
-  };
+    setTimeout(() => {
+      if (savedSchool) setSchoolName(savedSchool);
+      if (savedLoc) setSchoolLocation(savedLoc);
+      if (savedKey) setApiKey(savedKey);
+      if (savedTime) setDefaultTime(parseInt(savedTime));
+      if (savedClass) setDefaultClass(savedClass);
+      if (savedTheme) {
+        setTheme(savedTheme);
+        applyTheme(savedTheme);
+      }
+    }, 0);
+  }, []);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

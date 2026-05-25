@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { 
   ArrowLeft, 
@@ -11,10 +12,7 @@ import {
   Library, 
   Sun, 
   Moon, 
-  ChevronDown, 
-  BookOpen, 
-  Award,
-  Sparkles
+  ChevronDown
 } from 'lucide-react';
 import styles from './TopHeaderBar.module.css';
 
@@ -48,10 +46,30 @@ export default function TopHeaderBar({ pathName }: TopHeaderBarProps) {
   const bellRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
+
+
+  // Helper for formatting time (placed above useEffect blocks to avoid hoisting lint rules)
+  const formatRelativeTime = (dateStr: string) => {
+    try {
+      const timeMs = new Date(dateStr).getTime();
+      const diffSecs = Math.floor((Date.now() - timeMs) / 1000);
+      if (diffSecs < 60) return 'Just now';
+      const diffMins = Math.floor(diffSecs / 60);
+      if (diffMins < 60) return `${diffMins}m ago`;
+      const diffHours = Math.floor(diffMins / 60);
+      if (diffHours < 24) return `${diffHours}h ago`;
+      return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } catch {
+      return 'Recent';
+    }
+  };
+
   // Initialize theme
   useEffect(() => {
     const savedTheme = (localStorage.getItem('veda_theme') as 'light' | 'dark') || 'light';
-    setActiveTheme(savedTheme);
+    setTimeout(() => {
+      setActiveTheme(savedTheme);
+    }, 0);
   }, []);
 
   // Construct dynamic notifications list based on live store data!
@@ -104,7 +122,9 @@ export default function TopHeaderBar({ pathName }: TopHeaderBarProps) {
       });
     }
 
-    setCustomNotifications(list);
+    setTimeout(() => {
+      setCustomNotifications(list);
+    }, 0);
   }, [assignments, toolkitItems]);
 
   // Click outside to close dropdown menus
@@ -120,21 +140,6 @@ export default function TopHeaderBar({ pathName }: TopHeaderBarProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const formatRelativeTime = (dateStr: string) => {
-    try {
-      const timeMs = new Date(dateStr).getTime();
-      const diffSecs = Math.floor((Date.now() - timeMs) / 1000);
-      if (diffSecs < 60) return 'Just now';
-      const diffMins = Math.floor(diffSecs / 60);
-      if (diffMins < 60) return `${diffMins}m ago`;
-      const diffHours = Math.floor(diffMins / 60);
-      if (diffHours < 24) return `${diffHours}h ago`;
-      return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    } catch (e) {
-      return 'Recent';
-    }
-  };
 
   const handleThemeChange = (themeName: 'light' | 'dark') => {
     setActiveTheme(themeName);
@@ -234,7 +239,7 @@ export default function TopHeaderBar({ pathName }: TopHeaderBarProps) {
               setIsNotificationsOpen(false);
             }}
           >
-            <img src="/logo 1.png" alt="Avatar" className={styles.avatarImage} />
+            <Image src="/logo_1.png" alt="Avatar" width={32} height={32} className={styles.avatarImage} />
             <span className={styles.profileName}>John Doe</span>
             <span className={styles.profileChevron}>
               <ChevronDown size={12} style={{ transform: isProfileOpen ? 'rotate(180deg)' : 'none', transition: 'var(--transition-smooth)' }} />

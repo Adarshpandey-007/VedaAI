@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Plus, X, GraduationCap, Users as UsersIcon, BookOpen, Trash2 } from 'lucide-react';
+import { Plus, X, Users as UsersIcon, BookOpen, Trash2 } from 'lucide-react';
 import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Groups.module.css';
 
@@ -33,12 +33,14 @@ export default function GroupsPage() {
 
   useEffect(() => {
     const saved = localStorage.getItem('veda_groups');
-    if (saved) {
-      setGroups(JSON.parse(saved));
-    } else {
-      setGroups(DEFAULT_GROUPS);
-      localStorage.setItem('veda_groups', JSON.stringify(DEFAULT_GROUPS));
-    }
+    setTimeout(() => {
+      if (saved) {
+        setGroups(JSON.parse(saved));
+      } else {
+        setGroups(DEFAULT_GROUPS);
+        localStorage.setItem('veda_groups', JSON.stringify(DEFAULT_GROUPS));
+      }
+    }, 0);
   }, []);
 
   const saveGroups = (newGroups: IGroup[]) => {

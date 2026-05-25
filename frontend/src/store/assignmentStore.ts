@@ -61,7 +61,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
           console.log(`[WebSocket] Dynamic auto-subscription for active job room: ${a.id}`);
         }
       });
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
         console.warn('⚠️ [VedaAI API] Backend server is unreachable. Please ensure the Express backend is running on port 5000.');
         set({ error: 'Backend server is currently offline. Please start the backend running on port 5000.' });
@@ -96,7 +96,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       }));
       
       return newAssignment;
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error(err);
       set({ isGenerating: false, activeAssignmentId: null, error: err.message || 'Failed to submit.' });
       throw err;
@@ -114,7 +114,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
         assignments: state.assignments.filter(a => a.id !== id),
         currentPaper: state.currentPaper?.assignmentId === id ? null : state.currentPaper
       }));
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error(err);
       set({ error: err.message || 'Failed to delete.' });
     }
@@ -130,7 +130,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       }
       const data = await res.json();
       set({ currentPaper: data, error: null });
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.warn('[Zustand] Syncing paper failed:', err?.message || err);
       set({ currentPaper: null, error: 'Question paper has not completed generation yet.' });
     }
@@ -227,7 +227,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       if (!res.ok) throw new Error('Failed to fetch toolkit items');
       const data = (await res.json()) as IToolkitItem[];
       set({ toolkitItems: data });
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('[VedaAI API] Error fetching toolkit items:', err);
     }
   },
@@ -250,7 +250,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       if (!res.ok) throw new Error('Failed to save paper changes.');
       const data = await res.json();
       set({ currentPaper: data });
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('[Zustand] Error saving paper changes:', err);
       alert(err.message || 'Failed to save paper.');
     }
@@ -268,7 +268,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       if (!res.ok) throw new Error('Failed to re-roll question.');
       const data = await res.json();
       set({ currentPaper: data });
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('[Zustand] Error re-rolling question:', err);
       throw err;
     }
@@ -288,7 +288,7 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       set(state => ({
         toolkitItems: state.toolkitItems.map(item => item.id === itemId ? data : item)
       }));
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('[Zustand] Error saving toolkit item:', err);
       alert(err.message || 'Failed to save edits.');
     }

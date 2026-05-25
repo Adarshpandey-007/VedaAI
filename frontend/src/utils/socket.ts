@@ -1,5 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { useAssignmentStore } from '../store/assignmentStore';
+import { IQuestionPaper } from '../types';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
 
@@ -29,11 +30,11 @@ export const getSocket = (): Socket => {
     });
 
     // Real-time generator completed listener
-    socket.on('assignment_completed', (data: { assignmentId: string; data: any }) => {
+    socket.on('assignment_completed', (data: { assignmentId: string; data: unknown }) => {
       console.log(`[WebSocket] Received completion for ${data.assignmentId}`);
       useAssignmentStore.getState().completeGeneration(
         data.assignmentId,
-        data.data
+        data.data as IQuestionPaper
       );
     });
 

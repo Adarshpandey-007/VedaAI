@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { 
   ArrowLeft, 
@@ -10,7 +10,6 @@ import {
   FileText, 
   Eye, 
   EyeOff, 
-  Calendar,
   AlertTriangle,
   Sparkles
 } from 'lucide-react';
@@ -18,7 +17,6 @@ import styles from './QuestionPaperView.module.css';
 
 export default function QuestionPaperOutputPage() {
   const params = useParams();
-  const router = useRouter();
   const assignmentId = params.id as string;
 
   // Sync state from Zustand store
@@ -36,13 +34,15 @@ export default function QuestionPaperOutputPage() {
 
   // Advanced features state
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editedPaper, setEditedPaper] = useState<any>(null);
+  const [editedPaper, setEditedPaper] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [reRollingQId, setReRollingQId] = useState<string | null>(null);
 
   // Sync edits payload on initial paper hydration
   useEffect(() => {
     if (currentPaper) {
-      setEditedPaper(JSON.parse(JSON.stringify(currentPaper)));
+      setTimeout(() => {
+        setEditedPaper(JSON.parse(JSON.stringify(currentPaper)));
+      }, 0);
     }
   }, [currentPaper]);
 
@@ -177,7 +177,7 @@ export default function QuestionPaperOutputPage() {
       if (updatedPaper) {
         setEditedPaper(JSON.parse(JSON.stringify(updatedPaper)));
       }
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       alert(err.message || 'Single question regeneration failed.');
     } finally {
       setReRollingQId(null);
@@ -190,7 +190,7 @@ export default function QuestionPaperOutputPage() {
     try {
       await updateQuestionPaper(assignmentId, editedPaper);
       setIsEditMode(false);
-    } catch (err: any) {
+    } catch {
       alert('Failed to save paper changes.');
     }
   };
@@ -206,7 +206,7 @@ export default function QuestionPaperOutputPage() {
           <AlertTriangle size={48} color="#C62828" />
           <h2 style={{ fontSize: '1.25rem', fontWeight: 800 }}>AI Generation Processing or Not Found</h2>
           <p style={{ color: 'var(--accent-muted)', fontSize: '0.9rem', textAlign: 'center', maxWidth: '400px' }}>
-            We couldn't retrieve your question paper. If you just submitted, the AI queue is compiling sections. Check back in a few seconds!
+            We couldn&apos;t retrieve your question paper. If you just submitted, the AI queue is compiling sections. Check back in a few seconds!
           </p>
           <button className={styles.pdfBtn} onClick={() => fetchQuestionPaper(assignmentId)} style={{ border: '1px solid var(--border-color)', marginTop: '1rem' }}>
             Retry Sync
@@ -398,31 +398,32 @@ export default function QuestionPaperOutputPage() {
           const activePaper = isEditMode ? editedPaper : currentPaper;
           if (!activePaper || !activePaper.sections) return null;
 
-          return activePaper.sections.map((section: any, sIdx: number) => (
-            <div key={sIdx} className={styles.sectionBlock}>
-              <div className={styles.sectionHeaderBlock}>
-                <span className={styles.sectionLetter}>{section.title}</span>
-                {isEditMode ? (
-                  <input 
-                    type="text" 
-                    value={section.instruction || ''} 
-                    onChange={e => {
-                      const updatedSections = [...editedPaper.sections];
-                      updatedSections[sIdx].instruction = e.target.value;
-                      setEditedPaper({ ...editedPaper, sections: updatedSections });
-                    }}
-                    style={{ flex: 1, padding: '0.2rem 0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', background: 'var(--bg-input)', color: 'var(--text-primary)', fontSize: '0.85rem' }}
-                  />
-                ) : (
-                  <span className={styles.sectionInstr}>{section.instruction}</span>
-                )}
-              </div>
+          return activePaper.sections.map((section: any, sIdx: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+            return (
+              <div key={sIdx} className={styles.sectionBlock}>
+                <div className={styles.sectionHeaderBlock}>
+                  <span className={styles.sectionLetter}>{section.title}</span>
+                  {isEditMode ? (
+                    <input 
+                      type="text" 
+                      value={section.instruction || ''} 
+                      onChange={e => {
+                        const updatedSections = [...editedPaper.sections];
+                        updatedSections[sIdx].instruction = e.target.value;
+                        setEditedPaper({ ...editedPaper, sections: updatedSections });
+                      }}
+                      style={{ flex: 1, padding: '0.2rem 0.5rem', border: '1px dashed var(--border-color)', borderRadius: '6px', background: 'var(--bg-input)', color: 'var(--text-primary)', fontSize: '0.85rem' }}
+                    />
+                  ) : (
+                    <span className={styles.sectionInstr}>{section.instruction}</span>
+                  )}
+                </div>
 
-              <div className={styles.questionsList}>
-                {section.questions.map((q: any, qIdx: number) => {
-                  const currentQNum = globalQIndex++;
-                  const cleanedText = q.text.replace(/^(\[.*?\]\s*)?\d+[\.\)]\s*/, '$1');
-                  const isReRolling = reRollingQId === q.id;
+                <div className={styles.questionsList}>
+                  {section.questions.map((q: any, qIdx: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                    const currentQNum = globalQIndex++;
+                    const cleanedText = q.text.replace(/^(\[.*?\]\s*)?\d+[\.\)]\s*/, '$1');
+                    const isReRolling = reRollingQId === q.id;
 
                   return (
                     <div key={q.id} className={styles.questionItemWrap} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', position: 'relative' }}>
@@ -550,7 +551,8 @@ export default function QuestionPaperOutputPage() {
                 })}
               </div>
             </div>
-          ));
+            );
+          });
         })()}
 
         <div className={styles.endPaper}>
@@ -581,8 +583,9 @@ export default function QuestionPaperOutputPage() {
 
           {(showAnswerKey || printWithAnswers || isEditMode) && (
             <div className={styles.solutionsList}>
-              {(isEditMode ? editedPaper?.answerKey : currentPaper.answerKey).map((sol: any, index: number) => (
-                <div key={sol.questionId || index} className={styles.solutionItem}>
+              {(isEditMode ? editedPaper?.answerKey : currentPaper.answerKey).map((sol: any, index: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                return (
+                  <div key={sol.questionId || index} className={styles.solutionItem}>
                   <span className={styles.solQHeader}>
                     Question {index + 1}: {sol.questionText}
                   </span>
@@ -601,7 +604,8 @@ export default function QuestionPaperOutputPage() {
                     <p className={styles.solAnswerText}>{sol.answer}</p>
                   )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

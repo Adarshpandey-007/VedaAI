@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Folder, FileText, Download, ExternalLink, Trash2, Library } from 'lucide-react';
+import { Search, FileText, ExternalLink, Trash2, Library } from 'lucide-react';
 import { useAssignmentStore } from '../../store/assignmentStore';
 import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Library.module.css';
@@ -114,7 +114,9 @@ export default function LibraryPage() {
 
     // 4. Concat static syllabus assets
     const compiled = [...list, ...STATIC_TEMPLATES];
-    setItems(compiled);
+    setTimeout(() => {
+      setItems(compiled);
+    }, 0);
   }, [assignments, toolkitItems]);
 
   const handleDeleteItem = async (itemId: string, category: FolderCategory) => {

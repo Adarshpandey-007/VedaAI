@@ -12,8 +12,6 @@ import {
   Eye, 
   Trash2, 
   FileText,
-  AlertCircle,
-  Clock,
   Filter
 } from 'lucide-react';
 import TopHeaderBar from '@/components/TopHeaderBar';
@@ -88,7 +86,7 @@ export default function AssignmentsPage() {
         month: '2-digit',
         year: 'numeric'
       });
-    } catch (e) {
+    } catch {
       return isoString;
     }
   };

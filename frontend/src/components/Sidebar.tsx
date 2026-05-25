@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAssignmentStore } from '../store/assignmentStore';
 import { 
@@ -24,7 +25,7 @@ export default function Sidebar() {
     return pathname === path ? styles.active : '';
   };
 
-  const completedCount = assignments.filter(a => a.status === 'completed').length;
+
 
   return (
     <>
@@ -32,7 +33,7 @@ export default function Sidebar() {
       <aside className={`${styles.sidebar} no-print`}>
         <div className={styles.topSection}>
           <div className={styles.logo}>
-            <img src="/logo 1.png" alt="VedaAI Logo" className={styles.logoImage} />
+            <Image src="/logo_1.png" alt="VedaAI Logo" width={32} height={32} className={styles.logoImage} />
             <span>VedaAI</span>
           </div>
 
@@ -71,7 +72,7 @@ export default function Sidebar() {
             <Link href="/toolkit" className={`${styles.navLink} ${isActive('/toolkit')}`}>
               <div className={styles.navLinkLeft}>
                 <Wand2 size={18} />
-                <span>AI Teacher's Toolkit</span>
+                <span>AI Teacher&apos;s Toolkit</span>
               </div>
             </Link>
 
