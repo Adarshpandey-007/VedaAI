@@ -1,4 +1,4 @@
-# <img src="frontend/public/logo_1.png" width="36" height="36" valign="middle" /> VedaAI — AI Assessment Creator & Teacher Portal
+# <img src="frontend/public/logo_1.png" width="36" height="36" valign="middle" /> VedaAI — AI Assessment Creator
 
 <p align="left">
   <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-16.2-black?style=flat-square&logo=next.js&logoColor=white" alt="Next.js" /></a>
