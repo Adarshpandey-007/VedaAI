@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Settings, Shield, Award, Sparkles, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Settings.module.css';
 
 export default function SettingsPage() {
@@ -107,6 +108,7 @@ export default function SettingsPage() {
 
   return (
     <div className={styles.container}>
+      <TopHeaderBar pathName="System Settings" />
       <div className={styles.headerText}>
         <h1 className={styles.title}>System Settings</h1>
         <p className={styles.subtitle}>Customize your digital workspace defaults, secure API access coordinates, and toggles visual parameters.</p>

@@ -14,6 +14,7 @@ import {
   Sparkles,
   BookOpen
 } from 'lucide-react';
+import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Dashboard.module.css';
 
 export default function DashboardHome() {
@@ -80,7 +81,10 @@ export default function DashboardHome() {
   const hardOffset = -(easyStroke + modStroke);
 
   // Subject/Syllabus counts fallback
-  const subjectList = Object.entries(subjectCounts).map(([name, count]) => ({ name, count }));
+  const subjectList = Object.entries(subjectCounts).map(([name, count]) => {
+    const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+    return { name: capitalized, count };
+  });
   if (subjectList.length === 0) {
     subjectList.push({ name: 'Science', count: 3 });
     subjectList.push({ name: 'Mathematics', count: 2 });
@@ -155,12 +159,13 @@ export default function DashboardHome() {
 
   return (
     <div className={styles.container}>
+      <TopHeaderBar pathName="Dashboard" />
       {/* Welcome banner */}
       <div className={styles.welcomeCard}>
         <div className={styles.welcomeText}>
           <h1 className={styles.welcomeTitle}>Welcome back, John Doe</h1>
           <p className={styles.welcomeSubtitle}>
-            Create, manage, and print customized examinations. Our prompt parsing engine leverages Gemini AI to formulate structured CBSE/NCERT papers.
+            Create, manage, and print AI-powered examinations. Gemini generates structured CBSE/NCERT papers from your curriculum inputs.
           </p>
         </div>
         <Link href="/assignments/new" style={{ textDecoration: 'none' }}>
@@ -223,20 +228,20 @@ export default function DashboardHome() {
           <p className={styles.chartDesc}>Distribution ratios of generated items</p>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', justifyContent: 'center', margin: '0.25rem 0' }}>
-            <svg width="90" height="90" viewBox="0 0 80 80" style={{ transform: 'rotate(-90deg)', flexShrink: 0 }}>
-              <circle cx="40" cy="40" r="30" fill="transparent" stroke="var(--border-color)" strokeWidth="8" />
+            <svg width="84" height="84" viewBox="0 0 80 80" style={{ transform: 'rotate(-90deg)', flexShrink: 0 }}>
+              <circle cx="40" cy="40" r="30" fill="transparent" stroke="var(--border-color)" strokeWidth="7" />
               {/* Easy Segment */}
               <circle 
                 cx="40" 
                 cy="40" 
                 r="30" 
                 fill="transparent" 
-                stroke="#22C55E" 
-                strokeWidth="8" 
+                stroke="#10B981" 
+                strokeWidth="7" 
                 strokeDasharray={`${easyStroke} ${circ}`} 
                 strokeDashoffset={easyOffset}
                 strokeLinecap="round"
-                style={{ transition: 'stroke-dasharray 0.5s ease' }}
+                style={{ transition: 'stroke-dasharray 0.6s ease' }}
               />
               {/* Moderate Segment */}
               <circle 
@@ -244,12 +249,12 @@ export default function DashboardHome() {
                 cy="40" 
                 r="30" 
                 fill="transparent" 
-                stroke="#FF8A00" 
-                strokeWidth="8" 
+                stroke="#F59E0B" 
+                strokeWidth="7" 
                 strokeDasharray={`${modStroke} ${circ}`} 
                 strokeDashoffset={modOffset}
                 strokeLinecap="round"
-                style={{ transition: 'stroke-dasharray 0.5s ease' }}
+                style={{ transition: 'stroke-dasharray 0.6s ease' }}
               />
               {/* Hard Segment */}
               <circle 
@@ -258,26 +263,26 @@ export default function DashboardHome() {
                 r="30" 
                 fill="transparent" 
                 stroke="#EF4444" 
-                strokeWidth="8" 
+                strokeWidth="7" 
                 strokeDasharray={`${hardStroke} ${circ}`} 
                 strokeDashoffset={hardOffset}
                 strokeLinecap="round"
-                style={{ transition: 'stroke-dasharray 0.5s ease' }}
+                style={{ transition: 'stroke-dasharray 0.6s ease' }}
               />
             </svg>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22C55E' }} />
-                <span style={{ color: 'var(--text-secondary)' }}>Easy: {easyPct.toFixed(0)}%</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.75rem', fontWeight: 600 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                <span style={{ color: 'var(--text-tertiary)' }}>Easy · {easyPct.toFixed(0)}%</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#FF8A00' }} />
-                <span style={{ color: 'var(--text-secondary)' }}>Moderate: {modPct.toFixed(0)}%</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+                <span style={{ color: 'var(--text-tertiary)' }}>Moderate · {modPct.toFixed(0)}%</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#EF4444' }} />
-                <span style={{ color: 'var(--text-secondary)' }}>Hard: {hardPct.toFixed(0)}%</span>
+                <span style={{ color: 'var(--text-tertiary)' }}>Hard · {hardPct.toFixed(0)}%</span>
               </div>
             </div>
           </div>
@@ -291,14 +296,14 @@ export default function DashboardHome() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', justifyContent: 'center' }}>
             {subjectList.slice(0, 3).map((sub, sIdx) => {
               const pct = (sub.count / maxSubCount) * 100;
-              const barColor = sIdx === 0 ? '#6366F1' : sIdx === 1 ? '#3B82F6' : '#8B5CF6';
+              const barColor = sIdx === 0 ? '#6366F1' : sIdx === 1 ? '#818CF8' : '#A78BFA';
               return (
                 <div key={sub.name} style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>
                     <span>{sub.name}</span>
                     <span>{sub.count} Papers</span>
                   </div>
-                  <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--surface-hover)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '5px', backgroundColor: 'var(--surface-hover)', borderRadius: '3px', overflow: 'hidden' }}>
                     <div style={{ width: `${pct}%`, height: '100%', backgroundColor: barColor, borderRadius: '3px', transition: 'width 0.5s ease' }} />
                   </div>
                 </div>
@@ -316,29 +321,27 @@ export default function DashboardHome() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.25rem 0' }}>
             <div style={{ 
-              width: '48px', 
-              height: '48px', 
-              borderRadius: '50%', 
-              backgroundColor: 'rgba(255, 78, 32, 0.08)', 
+              width: '44px', 
+              height: '44px', 
+              borderRadius: '12px', 
+              backgroundColor: 'var(--accent-glow-light)', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
-              border: '2px solid var(--accent-glow)',
-              boxShadow: 'var(--shadow-button-glow)',
-              fontSize: '1.25rem',
+              fontSize: '1.15rem',
               color: 'var(--accent-glow)',
               flexShrink: 0
             }}>
               ⏳
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-              <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>{hoursSaved} hrs</span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', fontWeight: 700 }}>Total writing hours saved</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+              <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1, letterSpacing: '-0.5px' }}>{hoursSaved} hrs</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>Total writing hours saved</span>
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)' }}>
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-tertiary)' }}>
             <span>Plans: {totalPlansCreated}</span>
             <span>Questions: {totalQuestionsCreated}</span>
           </div>

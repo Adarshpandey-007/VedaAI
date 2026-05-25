@@ -32,7 +32,7 @@ export default function Sidebar() {
       <aside className={`${styles.sidebar} no-print`}>
         <div className={styles.topSection}>
           <div className={styles.logo}>
-            <div className={styles.logoIcon}>V</div>
+            <img src="/logo 1.png" alt="VedaAI Logo" className={styles.logoImage} />
             <span>VedaAI</span>
           </div>
 

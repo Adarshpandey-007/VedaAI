@@ -265,8 +265,8 @@ export default function QuestionPaperOutputPage() {
             }}
             style={{ 
               backgroundColor: isEditMode ? '#22C55E' : 'transparent', 
-              color: isEditMode ? 'white' : 'var(--text-primary)', 
-              borderColor: isEditMode ? '#22C55E' : 'var(--border-color)',
+              color: isEditMode ? 'white' : 'white', 
+              borderColor: isEditMode ? '#22C55E' : 'rgba(255, 255, 255, 0.4)',
               fontWeight: 800
             }}
           >
@@ -292,7 +292,7 @@ export default function QuestionPaperOutputPage() {
             <span>Export to Word</span>
           </button>
 
-          <button className={styles.pdfBtn} onClick={handlePrintPDF}>
+          <button className={styles.pdfBtn} onClick={handlePrintPDF} style={{ border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
             <Download size={16} />
             <span>Download as PDF</span>
           </button>

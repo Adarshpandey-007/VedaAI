@@ -1,11 +1,49 @@
+/* ─── Keyframes ─────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ─── Container ────────────────────────────────────────────── */
+
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
+  animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* ─── Header & Breadcrumb ──────────────────────────────────── */
 
 .header {
   display: flex;
@@ -17,7 +55,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -25,55 +63,62 @@
 .backLink {
   display: flex;
   align-items: center;
-  color: var(--accent-dark);
+  color: var(--text-secondary);
   text-decoration: none;
   font-weight: 600;
   transition: var(--transition-smooth);
 }
 
 .backLink:hover {
-  transform: translateX(-2px);
+  color: var(--accent-glow);
+  transform: translateX(-3px);
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .subtitle {
-  font-size: 0.95rem;
-  color: var(--accent-muted);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
 }
 
-/* Progress bar matching Figma slider */
+/* ─── Progress Bar ─────────────────────────────────────────── */
+
 .progressBarContainer {
   width: 100%;
   height: 4px;
   background-color: var(--border-color);
-  border-radius: 99px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 
 .progressBar {
-  width: 50%; /* Step 1 indicator */
+  width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-glow) 0%, #FFA07A 100%);
-  border-radius: 99px;
-  transition: var(--transition-smooth);
+  background: linear-gradient(90deg, var(--accent-glow) 0%, var(--accent-glow-light) 100%);
+  border-radius: var(--radius-pill);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ─── Form Card ────────────────────────────────────────────── */
 
 .formCard {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: var(--shadow-premium);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.15rem;
+  transition: var(--transition-smooth);
 }
+
+/* ─── Section Headers ──────────────────────────────────────── */
 
 .sectionHeader {
   display: flex;
@@ -82,45 +127,56 @@
 }
 
 .sectionTitle {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .sectionSubtitle {
   font-size: 0.85rem;
-  color: var(--accent-muted);
+  color: var(--text-secondary);
 }
 
-/* File Upload Dotted Zone */
+/* ─── Upload Zone ──────────────────────────────────────────── */
+
 .uploadZone {
   border: 2px dashed var(--border-hover);
-  border-radius: 16px;
-  padding: 2rem;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   background-color: var(--surface-secondary);
   transition: var(--transition-smooth);
   cursor: pointer;
   position: relative;
 }
 
+.uploadZone:hover {
+  border-color: var(--accent-muted);
+  background-color: var(--accent-glow-light);
+}
+
 .uploadZoneActive {
   border-color: var(--accent-glow);
-  background-color: rgba(255, 78, 32, 0.02);
+  background-color: var(--accent-glow-light);
 }
 
 .uploadIcon {
   color: var(--accent-glow);
-  background-color: rgba(255, 78, 32, 0.08);
+  background-color: var(--accent-glow-light);
   padding: 0.75rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.uploadZoneActive .uploadIcon {
+  transform: scale(1.08);
 }
 
 .uploadText {
@@ -134,30 +190,35 @@
 .uploadTitle {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .uploadLimits {
   font-size: 0.75rem;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
 }
 
 .browseBtn {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   background-color: var(--surface-elevated);
   border: 1px solid var(--border-color);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
 .browseBtn:hover {
   background-color: var(--surface-secondary);
   border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
+
+/* ─── File Indicator ───────────────────────────────────────── */
 
 .fileIndicator {
   display: flex;
@@ -165,9 +226,10 @@
   gap: 0.75rem;
   background-color: var(--badge-info-bg);
   border: 1px solid var(--badge-info-border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
   width: 100%;
+  transition: var(--transition-smooth);
 }
 
 .fileName {
@@ -181,18 +243,22 @@
 }
 
 .removeFileBtn {
-  color: var(--badge-danger-text);
+  color: var(--text-tertiary);
   font-size: 0.85rem;
   font-weight: 600;
   transition: var(--transition-smooth);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.4rem;
 }
 
 .removeFileBtn:hover {
-  color: #7F1D1D;
-  text-decoration: underline;
+  color: var(--accent-glow);
+  background-color: var(--badge-danger-bg);
 }
 
-/* Date picker */
+/* ─── Input Group & Date ───────────────────────────────────── */
+
 .inputGroup {
   display: flex;
   flex-direction: column;
@@ -202,7 +268,7 @@
 .label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .dateInputWrapper {
@@ -213,12 +279,12 @@
 
 .dateInput {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
   background-color: var(--bg-input);
-  border-radius: 12px;
-  font-size: 0.95rem;
-  color: var(--accent-dark);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  color: var(--text-primary);
   font-weight: 500;
   outline: none;
   transition: var(--transition-smooth);
@@ -227,10 +293,11 @@
 .dateInput:focus {
   border-color: var(--accent-glow);
   background-color: var(--surface-elevated);
-  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+  box-shadow: 0 0 0 3px var(--border-focus);
 }
 
-/* Question Types Section */
+/* ─── Question Types Table ─────────────────────────────────── */
+
 .tableContainer {
   display: flex;
   flex-direction: column;
@@ -240,10 +307,12 @@
 .tableHeader {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 40px;
-  gap: 1rem;
-  padding: 0.5rem 0.75rem;
-  color: var(--accent-muted);
-  font-size: 0.8rem;
+  gap: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  background-color: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -252,35 +321,45 @@
 .row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 40px;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: center;
 }
 
 .selectInput {
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
   background-color: var(--bg-input);
-  border-radius: 12px;
-  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
   font-weight: 500;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   outline: none;
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
 .selectInput:focus {
   border-color: var(--accent-glow);
   background-color: var(--surface-elevated);
+  box-shadow: 0 0 0 3px var(--border-focus);
 }
+
+/* ─── Counter ──────────────────────────────────────────────── */
 
 .counter {
   display: flex;
   align-items: center;
   border: 1px solid var(--border-color);
   background-color: var(--bg-input);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  height: 42px;
+  height: 34px;
+  transition: var(--transition-smooth);
+}
+
+.counter:focus-within {
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 0 3px var(--border-focus);
 }
 
 .counterBtn {
@@ -289,15 +368,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   font-size: 1.1rem;
   font-weight: 600;
+  border-radius: var(--radius-sm);
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
 .counterBtn:hover {
   background-color: var(--surface-hover);
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .counterVal {
@@ -305,102 +386,117 @@
   text-align: center;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
+/* ─── Delete & Add Buttons ─────────────────────────────────── */
+
 .deleteBtn {
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 42px;
+  height: 34px;
   width: 40px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
 .deleteBtn:hover {
   background-color: var(--badge-danger-bg);
-  color: var(--badge-danger-text);
+  color: var(--accent-glow);
 }
 
 .addBtn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--accent-dark);
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 700;
   padding: 0.6rem 1rem;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   border: 1px dashed var(--border-color);
+  background-color: var(--surface-secondary);
   width: fit-content;
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
 .addBtn:hover {
-  background-color: var(--surface-secondary);
+  background-color: var(--surface-hover);
   border-color: var(--border-hover);
+  color: var(--accent-glow);
+  transform: translateY(-1px);
 }
 
-/* Totals Aggregate Block */
+/* ─── Totals Block ─────────────────────────────────────────── */
+
 .totalsBlock {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.25rem;
-  padding-top: 1rem;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+  margin-top: 0.5rem;
   border-top: 1px solid var(--border-color);
-  color: var(--accent-muted);
+  background-color: var(--accent-glow-light);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 600;
 }
 
 .totalHighlight {
-  color: var(--accent-dark);
+  color: var(--text-primary);
   font-weight: 800;
   font-size: 1rem;
 }
 
-/* Additional Info Voice Textarea */
+/* ─── Textarea & Mic ───────────────────────────────────────── */
+
 .textareaWrapper {
   position: relative;
 }
 
 .textarea {
   width: 100%;
-  height: 100px;
-  padding: 0.8rem 1rem;
-  padding-right: 3rem; /* Room for microphone */
+  height: 80px;
+  padding: 0.5rem 0.75rem;
+  padding-right: 3rem;
   border: 1px solid var(--border-color);
   background-color: var(--bg-input);
-  border-radius: 12px;
-  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
   font-weight: 500;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   outline: none;
   resize: none;
   transition: var(--transition-smooth);
+  font-family: inherit;
 }
 
 .textarea:focus {
   border-color: var(--accent-glow);
   background-color: var(--surface-elevated);
-  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+  box-shadow: 0 0 0 3px var(--border-focus);
 }
 
 .micIcon {
   position: absolute;
   right: 1rem;
   top: 1rem;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   cursor: pointer;
   transition: var(--transition-smooth);
+  border-radius: 50%;
+  padding: 0.2rem;
 }
 
 .micIcon:hover {
   color: var(--accent-glow);
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .micIconActive {
@@ -408,7 +504,8 @@
   animation: pulse 1s infinite alternate;
 }
 
-/* Action Footer */
+/* ─── Action Footer ────────────────────────────────────────── */
+
 .footer {
   display: flex;
   justify-content: space-between;
@@ -420,40 +517,52 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.75rem;
-  border-radius: 9999px;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--border-color);
   background-color: var(--surface-elevated);
-  color: var(--accent-muted);
+  color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
 .prevBtn:hover {
   background-color: var(--surface-secondary);
-  color: var(--accent-dark);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .nextBtn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 2.25rem;
-  border-radius: 9999px;
-  background-color: var(--accent-dark);
+  padding: 0.55rem 1.75rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent-glow);
   color: white;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   transition: var(--transition-smooth);
+  box-shadow: var(--shadow-button-glow);
+  cursor: pointer;
 }
 
 .nextBtn:hover {
-  background-color: var(--accent-dark-hover);
+  filter: brightness(1.08);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-button-glow), var(--shadow-md);
 }
 
-/* WebSocket Generation Progress Overlay */
+.nextBtn:active {
+  transform: translateY(0);
+}
+
+/* ─── Overlay (WebSocket Progress) ─────────────────────────── */
+
 .overlay {
   position: fixed;
   top: 0;
@@ -461,18 +570,23 @@
   width: 100vw;
   height: 100vh;
   background-color: var(--overlay-bg);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  animation: fadeInUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* ─── HUD Card ─────────────────────────────────────────────── */
 
 .hudCard {
   background-color: var(--bg-card);
-  border-radius: 32px;
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-premium);
   padding: 3rem;
   width: 100%;
   max-width: 500px;
@@ -481,18 +595,19 @@
   align-items: center;
   gap: 2rem;
   text-align: center;
+  animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
 
 .hudIcon {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-glow) 0%, #FFA07A 100%);
+  background: linear-gradient(135deg, var(--accent-glow) 0%, var(--accent-glow-light) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 8px 30px rgba(255, 78, 32, 0.3);
+  box-shadow: var(--shadow-button-glow);
 }
 
 .hudLoader {
@@ -506,21 +621,21 @@
   width: 100%;
   height: 10px;
   background-color: var(--surface-hover);
-  border-radius: 99px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 
 .hudProgressBar {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-glow) 0%, #FFA07A 100%);
-  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent-glow) 0%, var(--accent-glow-light) 100%);
+  border-radius: var(--radius-pill);
   transition: width 0.4s ease-out;
 }
 
 .hudPercent {
   font-size: 1.75rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .hudStatus {
@@ -531,5 +646,5 @@
 
 .hudSubText {
   font-size: 0.85rem;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
 }

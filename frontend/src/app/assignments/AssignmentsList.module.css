@@ -1,14 +1,49 @@
+/* ──────────────────────────────────────────────
+   AssignmentsList – Premium CSS Module
+   ────────────────────────────────────────────── */
+
+/* Entrance animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseProcessing {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 78, 32, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(255, 78, 32, 0.08);
+  }
+}
+
+/* ── Container ── */
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
+  animation: fadeInUp 0.45s ease-out both;
+  padding-bottom: 8rem;
+}
+
+/* ── Header ── */
+.headerGroup {
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  margin-bottom: 0.2rem;
 }
 
 .titleWrapper {
@@ -20,32 +55,34 @@
 .greenDot {
   width: 8px;
   height: 8px;
-  background-color: var(--badge-success-text);
+  background-color: #10B981;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(46, 125, 50, 0.6);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.55);
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .countBadge {
   background-color: var(--accent-glow);
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
   margin-left: 0.5rem;
+  line-height: 1.4;
 }
 
-/* Zero State Styles */
+/* ── Zero / Empty State ── */
 .zeroStateCard {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 32px;
+  border-radius: var(--radius-2xl);
   padding: 5rem 2rem;
   display: flex;
   flex-direction: column;
@@ -53,14 +90,14 @@
   justify-content: center;
   text-align: center;
   gap: 1.75rem;
-  box-shadow: var(--shadow-premium);
+  box-shadow: var(--shadow-md);
 }
 
 .zeroIllustration {
   position: relative;
   width: 160px;
   height: 160px;
-  background-color: var(--surface-inset);
+  background-color: var(--surface-secondary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -69,8 +106,8 @@
 
 .zeroMagnifier {
   position: absolute;
-  bottom: 0px;
-  right: 0px;
+  bottom: 0;
+  right: 0;
   width: 70px;
   height: 70px;
   background-color: var(--surface-elevated);
@@ -90,14 +127,14 @@
 .zeroTitle {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .zeroSubtitle {
   font-size: 0.95rem;
-  color: var(--accent-muted);
+  color: var(--text-secondary);
   max-width: 480px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .zeroBtn {
@@ -108,51 +145,76 @@
   color: white;
   font-weight: 700;
   padding: 0.8rem 2rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   transition: var(--transition-smooth);
   box-shadow: var(--shadow-md);
+  border: none;
+  cursor: pointer;
 }
 
 .zeroBtn:hover {
-  background-color: var(--accent-dark-hover);
+  background-color: var(--accent-glow);
   box-shadow: var(--shadow-button-glow);
   transform: translateY(-1px);
 }
 
-/* Filled State Styles */
+/* ── Filters Bar ── */
 .filtersBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
   width: 100%;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.35rem 0.35rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 0.25rem; /* Shrunk from 1.5rem to pull the cards grid upward */
 }
 
 .filterGroup {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--accent-muted);
-  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  font-size: 0.95rem;
   font-weight: 600;
 }
 
-.select {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--border-color);
-  background-color: var(--surface-elevated);
-  border-radius: 10px;
-  font-size: 0.85rem;
+.filterIcon {
+  color: var(--text-tertiary);
+}
+
+.filterSelect {
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   outline: none;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 1.25rem;
+  margin-left: 0.25rem;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%236B7280" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 16px;
   transition: var(--transition-smooth);
 }
 
-.select:hover {
-  border-color: var(--border-hover);
+.filterSelect option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 10px;
+}
+
+.filterSelect:hover {
+  color: var(--accent-glow);
 }
 
 .searchWrapper {
@@ -164,28 +226,31 @@
 
 .searchIcon {
   position: absolute;
-  left: 1rem;
-  color: var(--accent-muted);
+  left: 1.2rem;
+  color: var(--text-tertiary);
+  pointer-events: none;
 }
 
 .searchInput {
   width: 100%;
-  padding: 0.55rem 1rem;
-  padding-left: 2.5rem;
+  padding: 0.65rem 1rem 0.65rem 2.8rem;
   border: 1px solid var(--border-color);
-  background-color: var(--surface-elevated);
-  border-radius: 12px;
+  background-color: transparent;
+  border-radius: var(--radius-pill);
   font-size: 0.9rem;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   font-weight: 500;
   outline: none;
-  box-shadow: var(--shadow-sm);
   transition: var(--transition-smooth);
+}
+
+.searchInput::placeholder {
+  color: var(--text-tertiary);
 }
 
 .searchInput:focus {
   border-color: var(--accent-glow);
-  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.08);
+  box-shadow: 0 0 0 3px var(--border-focus, var(--accent-glow-light));
 }
 
 @media (max-width: 768px) {
@@ -198,20 +263,21 @@
   }
 }
 
-/* Assignments Grid Cards */
+/* ── Assignments Grid ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: 1.5rem;
   width: 100%;
 }
 
+/* ── Assignment Card ── */
 .card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   padding: 1.5rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   transition: var(--transition-smooth);
   position: relative;
   display: flex;
@@ -221,7 +287,7 @@
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-card-hover);
   border-color: var(--border-hover);
 }
 
@@ -235,30 +301,37 @@
 .cardTitle {
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   line-height: 1.3;
+  letter-spacing: -0.005em;
 }
 
 .menuBtn {
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   padding: 0.25rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   transition: var(--transition-smooth);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menuBtn:hover {
   background-color: var(--surface-hover);
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
-/* Card Dropdown Menu */
+/* ── Card Dropdown Menu ── */
 .dropdown {
   position: absolute;
   top: 3.5rem;
   right: 1.5rem;
   background-color: var(--surface-elevated);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   padding: 0.5rem;
   display: flex;
@@ -273,12 +346,16 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   text-align: left;
   transition: var(--transition-smooth);
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
 }
 
 .dropdownItem:hover {
@@ -293,27 +370,226 @@
   background-color: var(--badge-danger-bg);
 }
 
-/* Dates */
+/* ── Dates ── */
 .datesWrapper {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.85rem;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   font-weight: 500;
+  width: 100%;
 }
 
 .dateBold {
-  color: var(--accent-dark);
+  color: var(--text-primary);
   font-weight: 600;
 }
 
-/* Status Badges */
+/* ── Desktop Top Navigation Header Bar ── */
+.topHeaderBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1.25rem;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.5rem;
+}
+
+.topHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.backArrowBtn {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.backArrowBtn:hover {
+  background-color: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.pathWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pathIcon {
+  color: var(--text-tertiary);
+}
+
+.topHeaderPath {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.topHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.bellBtn {
+  background: none;
+  border: none;
+  position: relative;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.bellBtn:hover {
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.bellDot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  background-color: var(--badge-danger-text);
+  border-radius: 50%;
+  border: 1px solid var(--bg-card);
+}
+
+.profileBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.profileBadge:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-hover);
+}
+
+.avatarImage {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: var(--surface-secondary);
+}
+
+.profileName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.profileChevron {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+}
+
+.pageSubtitle {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin-top: 0;
+  margin-bottom: 0.4rem; /* Shrunk from 2rem to pull filtersBar upward */
+  font-weight: 500;
+}
+
+/* ── Desktop Pill Button ── */
+.desktopPillBtnContainer {
+  position: fixed;
+  bottom: 0;
+  left: 272px; /* Offset the fixed sidebar width to center relative to the main right workspace */
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem 1.5rem 2.5rem;
+  background: linear-gradient(to top, var(--bg-app) 30%, transparent 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 90;
+  pointer-events: none; /* Let scroll/mouse pass through the glassy layout */
+  transition: backdrop-filter 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* logical focus blur transition when teacher hovers over the action button */
+.desktopPillBtnContainer:has(.desktopPillBtn:hover) {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: linear-gradient(to top, var(--bg-app) 60%, transparent 100%);
+}
+
+@media (max-width: 1024px) {
+  .desktopPillBtnContainer {
+    display: none; /* Centered bottom pill button is only for desktop */
+  }
+}
+
+.desktopPillBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: var(--accent-dark);
+  color: white;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 1.25rem 4rem;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.35), var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  border: none;
+  pointer-events: auto; /* Re-enable mouse actions for the button itself */
+}
+
+.desktopPillBtn:hover {
+  background-color: var(--accent-glow);
+  color: white;
+  box-shadow: var(--shadow-button-glow), 0 20px 40px -8px rgba(255, 78, 32, 0.3);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.desktopPillBtn svg {
+  transition: transform 0.3s ease;
+}
+
+.desktopPillBtn:hover svg {
+  transform: rotate(90deg);
+}
+
+/* ── Card Footer & Status Badges ── */
 .cardFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-subtle, var(--border-color));
   padding-top: 1rem;
   margin-top: auto;
 }
@@ -323,15 +599,16 @@
   gap: 0.75rem;
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
 }
 
 .statusBadge {
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 0.2rem 0.5rem;
-  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
   text-transform: capitalize;
+  letter-spacing: 0.01em;
 }
 
 .statusCompleted {
@@ -342,6 +619,7 @@
 .statusProcessing {
   background-color: rgba(255, 78, 32, 0.08);
   color: var(--accent-glow);
+  animation: pulseProcessing 2s ease-in-out infinite;
 }
 
 .statusFailed {
@@ -354,32 +632,34 @@
   color: var(--badge-pending-text);
 }
 
-/* Floating Bottom Action */
+/* ── Floating Action Button ── */
 .floatBtn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background-color: var(--accent-dark);
-  color: white;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  transition: var(--transition-smooth);
-  z-index: 99;
-}
-
-.floatBtn:hover {
-  background-color: var(--accent-glow);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-button-glow);
+  display: none; /* Hidden on desktop screens for cleaner UI */
 }
 
 @media (max-width: 1024px) {
   .floatBtn {
-    bottom: 6rem; /* Shift up to not overlap mobile bottom nav */
+    position: fixed;
+    bottom: 6rem; /* Shift up to avoid mobile bottom nav overlap */
+    right: 2rem;
+    background-color: var(--accent-glow);
+    color: white;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-button-glow);
+    transition: var(--transition-smooth);
+    z-index: 99;
+    border: none;
+    cursor: pointer;
+  }
+
+  .floatBtn:hover {
+    background-color: var(--accent-dark);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-button-glow);
   }
 }

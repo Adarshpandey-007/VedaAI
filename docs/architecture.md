@@ -12,7 +12,7 @@ graph TD
     B -->|2. Create Assignment Record| C[(Database: MongoDB / Local File)]
     B -->|3. Push Job to Queue| D[Queue: BullMQ / In-Memory Queue]
     D -->|4. Pick Up Job| E[Worker Process]
-    E -->|5. Request Question Paper JSON| F[Gemini 1.5 Pro / Flash API]
+    E -->|5. Request Question Paper JSON| F[Gemini 3.5 Flash API]
     F -->|6. Return Structured Output| E
     E -->|7. Update Progress / Live Status| G[WebSocket: Socket.io]
     G -->|8. Push Live Updates| A
@@ -39,13 +39,12 @@ graph TD
 
 ### 4. Database Layer
 - **Real Mode**: Uses **Mongoose** to connect to MongoDB, validating schemas for Assignments and Question Papers.
-- **Fallback Mode**: Uses a local JSON file store (`db_fallback.json`) which mimics Mongoose CRUD operations, ensuring complete state persistence across server restarts even with no local MongoDB installed.
+- **Fallback Mode**: Uses a local JSON file store (`db_fallback.json`) which mimics Mongoose CRUD operations. Fully fortified with:
+  - **`AsyncLock` Mutex Serialization**: Sequences all concurrent route and background task database reads/writes, resolving race conditions.
+  - **In-Memory Cache Buffer (`cachedData`)**: Caches state in memory to gracefully buffer disk I/O and prevent silent data resets during partial write file stream states.
 
-### 5. AI Generation Service
-- Formulates a highly structured prompt incorporating:
-  - Subject, grade/class, target time, and maximum marks.
-  - Custom question distributions (e.g. 5 MCQs of 1 mark, 3 short questions of 2 marks).
-  - Extracted text from uploaded materials (PDF / TXT).
-  - Specific educational standards (CBSE/NCERT).
-- Invokes the **Gemini API** with system instructions demanding strict JSON output.
-- Safely parses and validates the returned JSON structures, ensuring Section groupings, difficulty tags, mark allocations, and the answer keys are fully structured.
+### 5. AI Generation Service & Document Extraction
+- Formulates a highly structured prompt incorporating NCERT subject parameters, CBSE sections, and custom question distributions.
+- **Modern `pdf-parse` Class Engine**: Integrates modern cross-platform `PDFParse` class-based extraction to parse uploaded reference materials swiftly directly on the backend.
+- Invokes the **Gemini API** with system instructions demanding strict JSON output, validating section lists, question structures, and examiners answer keys in real-time.
+

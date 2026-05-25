@@ -1,53 +1,51 @@
 .sidebar {
-  width: 280px;
+  width: 272px;
   background-color: var(--bg-sidebar);
   height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
   border-right: 1px solid var(--border-color);
-  padding: 2rem 1.5rem;
+  padding: 1.75rem 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: 100;
-  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
 }
 
 @media (max-width: 1024px) {
   .sidebar {
-    display: none; /* Hide on mobile/tablet, we'll build a mobile bottom-bar or trigger */
+    display: none;
   }
 }
 
 .topSection {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.75rem;
 }
 
+/* Logo */
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1.5rem;
+  gap: 0.6rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   letter-spacing: -0.5px;
+  padding: 0 0.25rem;
 }
 
-.logoIcon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, var(--accent-glow) 0%, #FF7F50 100%);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 900;
+.logoImage {
+  height: 28px;
+  width: auto;
+  max-width: 100px;
+  object-fit: contain;
 }
 
+/* Create Button */
 .createBtn {
   display: flex;
   align-items: center;
@@ -55,131 +53,148 @@
   gap: 0.5rem;
   background-color: var(--accent-dark);
   color: white;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.9rem 1.5rem;
-  border-radius: 9999px;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-pill);
   width: 100%;
   transition: var(--transition-smooth);
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(255, 78, 32, 0.4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid transparent;
+  letter-spacing: 0.01em;
 }
 
 .createBtn:hover {
-  background-color: var(--accent-dark-hover);
+  background-color: var(--accent-glow);
   box-shadow: var(--shadow-button-glow);
   transform: translateY(-1px);
 }
 
+/* Navigation */
 .navigation {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .navLink {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem 1rem;
-  border-radius: 12px;
-  color: var(--accent-muted);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
   font-weight: 500;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: var(--transition-smooth);
 }
 
 .navLinkLeft {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .navLink:hover {
   background-color: var(--surface-hover);
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .active {
-  background-color: var(--surface-hover);
-  color: var(--accent-dark);
+  background-color: var(--accent-glow-light);
+  color: var(--accent-glow);
   font-weight: 600;
+}
+
+.active:hover {
+  background-color: var(--accent-glow-light);
+  color: var(--accent-glow);
 }
 
 .badge {
   background-color: var(--accent-glow);
   color: white;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-pill);
+  min-width: 20px;
+  text-align: center;
 }
 
+/* Bottom Section */
 .bottomSection {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .settingsLink {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.8rem 1rem;
-  color: var(--accent-muted);
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  color: var(--text-tertiary);
   font-weight: 500;
   text-decoration: none;
-  font-size: 0.95rem;
-  border-radius: 12px;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
   transition: var(--transition-smooth);
 }
 
 .settingsLink:hover {
-  color: var(--accent-dark);
+  color: var(--text-primary);
   background-color: var(--surface-hover);
 }
 
+/* School Badge */
 .schoolBadge {
   background-color: var(--surface-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  padding: 0.7rem 0.85rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
+  transition: var(--transition-smooth);
+}
+
+.schoolBadge:hover {
+  border-color: var(--border-hover);
 }
 
 .schoolAvatar {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  object-fit: cover;
-  background-color: var(--border-subtle);
+  background-color: var(--surface-hover);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .schoolText {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  gap: 0.05rem;
 }
 
 .schoolName {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .schoolLocation {
-  font-size: 0.75rem;
-  color: var(--accent-muted);
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -197,14 +212,15 @@
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 70px;
-    background-color: #0F172A; /* Figma design dark mobile bottom bar */
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    height: 64px;
+    background-color: #0F172A;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     z-index: 999;
     justify-content: space-around;
     align-items: center;
-    padding: 0 1rem;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
+    padding: 0 0.5rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .mobileLink {
@@ -212,10 +228,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #94A3B8;
+    color: #7C8497;
     text-decoration: none;
-    font-size: 0.75rem;
-    gap: 0.25rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    gap: 0.2rem;
     flex: 1;
     height: 100%;
     transition: var(--transition-smooth);

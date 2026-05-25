@@ -13,8 +13,10 @@ import {
   Trash2, 
   FileText,
   AlertCircle,
-  Clock
+  Clock,
+  Filter
 } from 'lucide-react';
+import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './AssignmentsList.module.css';
 import { IAssignment } from '../../types';
 
@@ -104,25 +106,19 @@ export default function AssignmentsPage() {
   });
 
   return (
-    <div className={styles.container}>
+    <>
+      <div className={styles.container}>
+        <TopHeaderBar pathName="Assignment" />
+
       {/* Page Header */}
-      <div className={`${styles.header} no-print`}>
-        <div className={styles.titleWrapper}>
-          {assignments.length > 0 && <div className={styles.greenDot}></div>}
-          <h1 className={styles.title}>Assignments</h1>
-          {assignments.length > 0 && (
-            <span className={styles.countBadge}>{assignments.length}</span>
-          )}
+      <div className={`${styles.headerGroup} no-print`}>
+        <div className={styles.header}>
+          <div className={styles.titleWrapper}>
+            {assignments.length > 0 && <div className={styles.greenDot}></div>}
+            <h1 className={styles.title}>Assignments</h1>
+          </div>
         </div>
-        
-        {assignments.length > 0 && (
-          <Link href="/assignments/new" style={{ textDecoration: 'none' }}>
-            <button className={styles.zeroBtn}>
-              <Plus size={16} />
-              <span>Create Assignment</span>
-            </button>
-          </Link>
-        )}
+        <p className={styles.pageSubtitle}>Manage and create assignments for your classes.</p>
       </div>
 
       {assignments.length === 0 ? (
@@ -156,9 +152,10 @@ export default function AssignmentsPage() {
           {/* Filters Control Bar */}
           <div className={`${styles.filtersBar} no-print`}>
             <div className={styles.filterGroup}>
-              <span>Filter By:</span>
+              <Filter size={16} className={styles.filterIcon} />
+              <span>Filter By</span>
               <select 
-                className={styles.select}
+                className={styles.filterSelect}
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -236,36 +233,48 @@ export default function AssignmentsPage() {
 
                 {/* Body Dates */}
                 <div className={styles.datesWrapper}>
-                  <span>Assigned on: <span className={styles.dateBold}>{formatDate(ass.createdAt)}</span></span>
-                  <span>Due: <span className={styles.dateBold}>{formatDate(ass.dueDate)}</span></span>
+                  <span>Assigned on : <span className={styles.dateBold}>{formatDate(ass.createdAt)}</span></span>
+                  <span>Due : <span className={styles.dateBold}>{formatDate(ass.dueDate)}</span></span>
                 </div>
 
-                {/* Footer and Badges */}
-                <div className={styles.cardFooter}>
-                  <div className={styles.metrics}>
-                    <span>{ass.totalQuestions} Questions</span>
-                    <span>•</span>
-                    <span>{ass.totalMarks} Marks</span>
+                {/* Footer and Badges - Only show for in-progress or failed to keep completed clean! */}
+                {ass.status !== 'completed' && (
+                  <div className={styles.cardFooter}>
+                    <div className={styles.metrics}>
+                      <span>{ass.totalQuestions} Questions</span>
+                      <span>•</span>
+                      <span>{ass.totalMarks} Marks</span>
+                    </div>
+
+                    <span className={`${styles.statusBadge} ${
+                      ass.status === 'processing' || ass.status === 'pending' ? styles.statusProcessing :
+                      ass.status === 'failed' ? styles.statusFailed : styles.statusPending
+                    }`}>
+                      {ass.status === 'processing' ? `Generating (${ass.progress}%)` : ass.status}
+                    </span>
                   </div>
-
-                  <span className={`${styles.statusBadge} ${
-                    ass.status === 'completed' ? styles.statusCompleted :
-                    ass.status === 'processing' || ass.status === 'pending' ? styles.statusProcessing :
-                    ass.status === 'failed' ? styles.statusFailed : styles.statusPending
-                  }`}>
-                    {ass.status === 'processing' ? `Generating (${ass.progress}%)` : ass.status}
-                  </span>
-                </div>
+                )}
               </div>
             ))}
           </div>
-
-          {/* Floating plus action button */}
-          <Link href="/assignments/new" className={`${styles.floatBtn} no-print`}>
-            <Plus size={24} />
-          </Link>
         </>
       )}
-    </div>
+      </div>
+
+      {/* Desktop Centered Bottom Pill Floating Button */}
+      <div className={`${styles.desktopPillBtnContainer} no-print`}>
+        <Link href="/assignments/new" style={{ textDecoration: 'none' }}>
+          <button className={styles.desktopPillBtn}>
+            <Plus size={20} fontWeight={800} />
+            <span>Create Assignment</span>
+          </button>
+        </Link>
+      </div>
+
+      {/* Floating plus action button (primarily for mobile view) */}
+      <Link href="/assignments/new" className={`${styles.floatBtn} no-print`}>
+        <Plus size={24} />
+      </Link>
+    </>
   );
 }

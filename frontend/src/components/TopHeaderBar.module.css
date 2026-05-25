@@ -1,0 +1,422 @@
+/* ─────────────────────────────────────────────────────────────
+   TopHeaderBar — Premium Glassmorphism Navigation Stylesheet
+   ───────────────────────────────────────────────────────────── */
+
+.topHeaderBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0 0.5rem; /* Shrunk padding vertically */
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.75rem; /* Reduced margin to pull content upward */
+  background-color: transparent;
+  position: relative;
+  z-index: 95;
+}
+
+.topHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.backArrowBtn {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.backArrowBtn:hover {
+  background-color: var(--accent-glow-light);
+  color: var(--accent-glow);
+  border-color: var(--accent-glow);
+  transform: translateX(-2px);
+}
+
+.topHeaderPath {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+  text-transform: capitalize;
+}
+
+.topHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.bellBtn {
+  background: none;
+  border: none;
+  position: relative;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+  border-radius: 50%;
+}
+
+.bellBtn:hover {
+  color: var(--accent-glow);
+  background-color: var(--accent-glow-light);
+  transform: scale(1.05);
+}
+
+.bellDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 7px;
+  height: 7px;
+  background-color: var(--accent-glow);
+  border-radius: 50%;
+  border: 1.5px solid var(--bg-card);
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.profileBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-sm);
+}
+
+.profileBadge:hover {
+  background-color: var(--accent-glow-light);
+  border-color: var(--accent-glow);
+}
+
+.profileBadge:hover .profileName {
+  color: var(--accent-glow);
+}
+
+.profileBadge:hover .profileChevron {
+  color: var(--accent-glow);
+}
+
+.avatarImage {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.profileBadge:hover .avatarImage {
+  border-color: var(--accent-glow);
+}
+
+.profileName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+.profileChevron {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  transition: var(--transition-smooth);
+  margin-top: 1px;
+}
+
+/* ── Glassmorphism Dropdowns ── */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-premium);
+  width: 320px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: dropdownSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdownHeader {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdownTitle {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.clearBtn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-glow);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: var(--transition-smooth);
+}
+
+.clearBtn:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.listScroll {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.notificationItem {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle, var(--border-color));
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border-left: 2px solid transparent;
+  width: 100%;
+}
+
+.notificationItem:hover {
+  background-color: var(--accent-glow-light);
+  border-left-color: var(--accent-glow);
+}
+
+.itemUnread {
+  background-color: rgba(255, 78, 32, 0.02);
+  border-left-color: rgba(255, 78, 32, 0.4);
+}
+
+.itemIcon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.itemMessage {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.itemTime {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.emptyState {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 0.825rem;
+  font-weight: 500;
+}
+
+/* ── Profile Dropdown Specifics ── */
+.profileHeader {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: var(--surface-secondary);
+}
+
+.profileNameText {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.profileEmail {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.profileRole {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--accent-glow);
+  background-color: var(--accent-glow-light);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  margin-top: 0.35rem;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profileStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.statItem:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.statValue {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.statLabel {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.menuItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.menuItem:hover {
+  background-color: var(--accent-glow-light);
+  color: var(--accent-glow);
+}
+
+.menuItemDanger {
+  color: var(--badge-danger-text);
+}
+
+.menuItemDanger:hover {
+  background-color: var(--badge-danger-bg);
+  color: var(--badge-danger-text);
+}
+
+.themeToggleWrapper {
+  padding: 0.25rem 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Custom theme pill switch */
+.themeSwitch {
+  display: flex;
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+}
+
+.themeOption {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.themeOptionActive {
+  background-color: var(--accent-glow);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.themeOptionInactive {
+  color: var(--text-tertiary);
+}
+
+.themeOptionInactive:hover {
+  color: var(--text-primary);
+}

@@ -6,70 +6,85 @@
   --font-secondary: 'Inter', sans-serif;
 
   /* Core Surfaces */
-  --bg-app: #F5F6F8;
+  --bg-app: #F7F8FA;
   --bg-sidebar: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-input: #F9FAFB;
-  --border-color: #E5E7EB;
+  --bg-input: #F4F5F7;
+  --border-color: #E8EBF0;
 
-  /* Extended Surfaces (for hover states, secondaries, elevated elements) */
-  --surface-hover: #F3F4F6;
-  --surface-secondary: #F8FAFC;
+  /* Extended Surfaces */
+  --surface-hover: #F0F1F5;
+  --surface-secondary: #F7F8FA;
   --surface-elevated: #FFFFFF;
-  --surface-inset: #F1F5F9;
+  --surface-inset: #EFF1F5;
+  --surface-glass: rgba(255, 255, 255, 0.72);
 
   /* Accent Palette */
   --accent-glow: #FF4E20;
   --accent-glow-rgb: 255, 78, 32;
+  --accent-glow-light: rgba(255, 78, 32, 0.06);
   --accent-dark: #111827;
   --accent-dark-hover: #1F2937;
-  --accent-muted: #6B7280;
+  --accent-muted: #7C8497;
 
   /* Text Colors */
   --text-primary: #0F172A;
-  --text-secondary: #334155;
-  --text-tertiary: #475569;
+  --text-secondary: #3D4559;
+  --text-tertiary: #6B7280;
   --text-on-dark: #F8FAFC;
 
   /* Border Variants */
-  --border-hover: #CBD5E1;
-  --border-subtle: #E2E8F0;
+  --border-hover: #D1D5DE;
+  --border-subtle: #E2E5ED;
+  --border-focus: rgba(255, 78, 32, 0.35);
 
   /* Status / Difficulty Badges */
-  --badge-easy-bg: #E8F5E9;
-  --badge-easy-text: #2E7D32;
-  --badge-moderate-bg: #FFF3E0;
-  --badge-moderate-text: #EF6C00;
-  --badge-hard-bg: #FFEBEE;
-  --badge-hard-text: #C62828;
-  --badge-success-bg: #E8F5E9;
-  --badge-success-text: #2E7D32;
-  --badge-danger-bg: #FFEBEE;
-  --badge-danger-text: #C62828;
-  --badge-pending-bg: #F1F5F9;
-  --badge-pending-text: #475569;
+  --badge-easy-bg: #ECFDF5;
+  --badge-easy-text: #059669;
+  --badge-moderate-bg: #FFF7ED;
+  --badge-moderate-text: #EA580C;
+  --badge-hard-bg: #FEF2F2;
+  --badge-hard-text: #DC2626;
+  --badge-success-bg: #ECFDF5;
+  --badge-success-text: #059669;
+  --badge-danger-bg: #FEF2F2;
+  --badge-danger-text: #DC2626;
+  --badge-pending-bg: #F0F1F5;
+  --badge-pending-text: #6B7280;
   --badge-info-bg: #F0FDF4;
   --badge-info-border: #BBF7D0;
   --badge-info-text: #166534;
 
   /* Overlay & Backdrop */
-  --overlay-bg: rgba(243, 244, 246, 0.95);
-  --modal-backdrop: rgba(15, 23, 42, 0.4);
+  --overlay-bg: rgba(247, 248, 250, 0.92);
+  --modal-backdrop: rgba(15, 23, 42, 0.35);
 
   /* Scrollbar */
   --scrollbar-track: transparent;
-  --scrollbar-thumb: #CBD5E1;
-  --scrollbar-thumb-hover: #94A3B8;
+  --scrollbar-thumb: #D1D5DE;
+  --scrollbar-thumb-hover: #A1A7B4;
 
   /* Elevation Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-  --shadow-button-glow: 0 0 16px rgba(255, 78, 32, 0.25);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+  --shadow-premium: 0 16px 48px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-button-glow: 0 4px 16px rgba(255, 78, 32, 0.20);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
 
   /* Transition Constants */
-  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-slow: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-pill: 9999px;
 }
 
 /* ============================================================
@@ -77,64 +92,68 @@
    ============================================================ */
 [data-theme="dark"] {
   /* Core Surfaces */
-  --bg-app: #0B1120;
+  --bg-app: #0C1222;
   --bg-sidebar: #111827;
-  --bg-card: #1E293B;
-  --bg-input: #1E293B;
-  --border-color: #334155;
+  --bg-card: #1A2236;
+  --bg-input: #1A2236;
+  --border-color: #2A3548;
 
   /* Extended Surfaces */
-  --surface-hover: #293548;
-  --surface-secondary: #1E293B;
-  --surface-elevated: #263347;
-  --surface-inset: #1A2332;
+  --surface-hover: #243048;
+  --surface-secondary: #1A2236;
+  --surface-elevated: #243048;
+  --surface-inset: #151D2E;
+  --surface-glass: rgba(26, 34, 54, 0.82);
 
   /* Accent */
   --accent-dark: #F1F5F9;
   --accent-dark-hover: #E2E8F0;
-  --accent-muted: #94A3B8;
+  --accent-muted: #8B95A8;
 
   /* Text Colors */
   --text-primary: #F1F5F9;
   --text-secondary: #CBD5E1;
-  --text-tertiary: #94A3B8;
+  --text-tertiary: #8B95A8;
   --text-on-dark: #F8FAFC;
 
   /* Border Variants */
-  --border-hover: #475569;
-  --border-subtle: #334155;
+  --border-hover: #3B4A60;
+  --border-subtle: #2A3548;
+  --border-focus: rgba(255, 78, 32, 0.45);
 
   /* Status Badges (toned for dark bg) */
-  --badge-easy-bg: rgba(46, 125, 50, 0.15);
-  --badge-easy-text: #66BB6A;
-  --badge-moderate-bg: rgba(239, 108, 0, 0.15);
-  --badge-moderate-text: #FFB74D;
-  --badge-hard-bg: rgba(198, 40, 40, 0.15);
-  --badge-hard-text: #EF5350;
-  --badge-success-bg: rgba(46, 125, 50, 0.15);
-  --badge-success-text: #66BB6A;
-  --badge-danger-bg: rgba(198, 40, 40, 0.15);
-  --badge-danger-text: #EF5350;
-  --badge-pending-bg: rgba(71, 85, 105, 0.2);
-  --badge-pending-text: #94A3B8;
+  --badge-easy-bg: rgba(5, 150, 105, 0.12);
+  --badge-easy-text: #34D399;
+  --badge-moderate-bg: rgba(234, 88, 12, 0.12);
+  --badge-moderate-text: #FB923C;
+  --badge-hard-bg: rgba(220, 38, 38, 0.12);
+  --badge-hard-text: #F87171;
+  --badge-success-bg: rgba(5, 150, 105, 0.12);
+  --badge-success-text: #34D399;
+  --badge-danger-bg: rgba(220, 38, 38, 0.12);
+  --badge-danger-text: #F87171;
+  --badge-pending-bg: rgba(107, 114, 128, 0.15);
+  --badge-pending-text: #8B95A8;
   --badge-info-bg: rgba(34, 197, 94, 0.08);
   --badge-info-border: rgba(34, 197, 94, 0.25);
   --badge-info-text: #4ADE80;
 
   /* Overlay */
-  --overlay-bg: rgba(11, 17, 32, 0.95);
-  --modal-backdrop: rgba(0, 0, 0, 0.6);
+  --overlay-bg: rgba(12, 18, 34, 0.92);
+  --modal-backdrop: rgba(0, 0, 0, 0.55);
 
   /* Scrollbar */
-  --scrollbar-thumb: #475569;
-  --scrollbar-thumb-hover: #64748B;
+  --scrollbar-thumb: #3B4A60;
+  --scrollbar-thumb-hover: #4F6078;
 
   /* Shadows — deeper in dark mode */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  --shadow-button-glow: 0 0 20px rgba(255, 78, 32, 0.35);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-premium: 0 16px 48px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-button-glow: 0 4px 20px rgba(255, 78, 32, 0.30);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 /* Base Resets */
@@ -146,7 +165,7 @@
 
 html, body {
   background-color: var(--bg-app);
-  color: var(--accent-dark);
+  color: var(--text-primary);
   font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -167,8 +186,8 @@ button {
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
@@ -190,23 +209,23 @@ button {
 
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin-left: 280px; /* Sidebar width match */
+  margin-left: 272px; /* Sidebar width match */
   min-width: 0; /* Prevents overflow issues */
 }
 
 @media (max-width: 1024px) {
   .main-content {
     margin-left: 0;
-    padding: 1.5rem;
+    padding: 1.25rem;
     padding-bottom: 6rem; /* Space for mobile nav */
   }
 }
 
-/* Pulse animation for generating status */
+/* Utility Animations */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
@@ -216,14 +235,33 @@ button {
   animation: pulse 1.5s infinite ease-in-out;
 }
 
-/* Floating animation */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-4px); }
 }
 
 .float-anim {
   animation: float 3s infinite ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
 }
 
 /* Print Overrides */

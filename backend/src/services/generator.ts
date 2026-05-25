@@ -134,7 +134,7 @@ export class AIGeneratorService {
         // Retrieve model model context
         const model = genAI.getGenerativeModel({
           model: modelConfig.name,
-          // Only pass systemInstruction if the model supports it (Gemini 1.5 models do)
+          // Only pass systemInstruction if the model supports it (Gemini 1.5, 2.x, and 3.x models do)
           systemInstruction: modelConfig.supportsJsonConfig ? systemInstruction : undefined
         });
 

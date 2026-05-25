@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Folder, FileText, Download, ExternalLink, Trash2, Library } from 'lucide-react';
 import { useAssignmentStore } from '../../store/assignmentStore';
+import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Library.module.css';
 
 type FolderCategory = 'papers' | 'uploads' | 'templates' | 'creations';
@@ -136,6 +137,7 @@ export default function LibraryPage() {
 
   return (
     <div className={styles.container}>
+      <TopHeaderBar pathName="My Library" />
       <div className={styles.headerSection}>
         <div className={styles.headerText}>
           <h1 className={styles.title}>My Library</h1>

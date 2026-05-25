@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Plus, X, GraduationCap, Users as UsersIcon, BookOpen, Trash2 } from 'lucide-react';
+import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Groups.module.css';
 
 interface IGroup {
@@ -82,6 +83,7 @@ export default function GroupsPage() {
 
   return (
     <div className={styles.container}>
+      <TopHeaderBar pathName="My Groups" />
       <div className={styles.headerSection}>
         <div className={styles.headerText}>
           <div className={styles.titleRow}>
@@ -132,9 +134,9 @@ export default function GroupsPage() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                <div className={styles.cardRight}>
                   <div className={styles.circleContainer}>
-                    <svg className={styles.svgCircle}>
+                    <svg className={styles.svgCircle} viewBox="0 0 72 72">
                       <circle className={styles.circleBg} cx="36" cy="36" r={radius} />
                       <circle 
                         className={styles.circleProgress} 
@@ -149,7 +151,7 @@ export default function GroupsPage() {
                   </div>
                   <button 
                     onClick={(e) => handleDeleteGroup(group.id, e)} 
-                    style={{ color: '#EF4444', padding: '4px', cursor: 'pointer' }}
+                    className={styles.deleteBtn}
                     title="Delete Group"
                   >
                     <Trash2 size={14} />

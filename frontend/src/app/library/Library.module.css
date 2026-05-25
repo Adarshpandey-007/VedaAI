@@ -1,10 +1,25 @@
+/* ===== fadeInUp Keyframe ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Container ===== */
 .container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem; /* Shrunk from 2rem to pull page elements closer */
   width: 100%;
+  animation: fadeInUp 0.5s ease-out both;
 }
 
+/* ===== Header Section ===== */
 .headerSection {
   display: flex;
   justify-content: space-between;
@@ -18,18 +33,18 @@
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: 1.4rem; /* Compact title size matching Linear aesthetics */
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .subtitle {
-  font-size: 0.9rem;
-  color: var(--accent-muted);
+  font-size: 0.85rem; /* Shrunk font size slightly */
+  color: var(--text-secondary);
 }
 
-/* Digital Folders Drawer Row */
+/* ===== Digital Folders Drawer Row ===== */
 .foldersGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -40,9 +55,9 @@
 .folderCard {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   padding: 1.5rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: var(--transition-smooth);
   display: flex;
@@ -62,27 +77,29 @@
   transition: var(--transition-smooth);
 }
 
-/* Custom Colored Folder Tabs */
-.folderOrange::before { background-color: var(--accent-glow); }
-.folderBlue::before { background-color: #3B82F6; }
-.folderPurple::before { background-color: #8B5CF6; }
-.folderGreen::before { background-color: #10B981; }
+/* ===== Muted Colored Folder Tabs ===== */
+.folderOrange::before { background-color: rgba(255, 78, 32, 0.7); }
+.folderBlue::before   { background-color: rgba(59, 130, 246, 0.7); }
+.folderPurple::before { background-color: rgba(139, 92, 246, 0.7); }
+.folderGreen::before  { background-color: rgba(16, 185, 129, 0.7); }
 
 .folderCard:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: #CBD5E1;
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--border-hover);
 }
 
+/* ===== Active Folder State ===== */
 .folderActive {
-  border-color: var(--accent-glow);
-  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--accent-glow);
+  background-color: var(--accent-glow-light);
+  box-shadow: var(--shadow-card-hover);
 }
 
-.folderActive.folderOrange { border-color: var(--accent-glow); }
-.folderActive.folderBlue { border-color: #3B82F6; }
-.folderActive.folderPurple { border-color: #8B5CF6; }
-.folderActive.folderGreen { border-color: #10B981; }
+.folderActive.folderOrange { border-color: rgba(255, 78, 32, 0.7); }
+.folderActive.folderBlue   { border-color: rgba(59, 130, 246, 0.7); }
+.folderActive.folderPurple { border-color: rgba(139, 92, 246, 0.7); }
+.folderActive.folderGreen  { border-color: rgba(16, 185, 129, 0.7); }
 
 .folderHeader {
   display: flex;
@@ -97,23 +114,23 @@
 .documentCount {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--accent-muted);
-  background-color: #F3F4F6;
+  color: var(--text-tertiary);
+  background-color: var(--surface-hover);
   padding: 0.15rem 0.5rem;
-  border-radius: 99px;
+  border-radius: var(--radius-pill);
 }
 
 .folderName {
   font-size: 1rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
-/* Documents Datagrid Table Section */
+/* ===== Documents Datagrid Table Section ===== */
 .datagridSection {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   padding: 1.75rem;
   box-shadow: var(--shadow-md);
   display: flex;
@@ -132,9 +149,10 @@
 .tableTitle {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
+/* ===== Search ===== */
 .searchWrapper {
   position: relative;
   width: 100%;
@@ -146,27 +164,31 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
 }
 
 .searchInput {
   width: 100%;
   padding: 0.65rem 1rem 0.65rem 2.25rem;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background-color: var(--bg-input);
   outline: none;
   font-size: 0.85rem;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   transition: var(--transition-smooth);
 }
 
-.searchInput:focus {
-  border-color: var(--accent-glow);
-  background-color: white;
+.searchInput::placeholder {
+  color: var(--text-tertiary);
 }
 
-/* Custom Table styled cleanly */
+.searchInput:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow-light);
+}
+
+/* ===== Table ===== */
 .tableContainer {
   width: 100%;
   overflow-x: auto;
@@ -176,12 +198,13 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  background-color: var(--bg-card);
 }
 
 .th {
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
   text-transform: uppercase;
   padding: 0.85rem 1.25rem;
   border-bottom: 2px solid var(--border-color);
@@ -191,11 +214,12 @@
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border-color);
   font-size: 0.9rem;
-  color: var(--accent-dark);
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
 }
 
 .tr:hover .td {
-  background-color: #F9FAFB;
+  background-color: var(--surface-secondary);
 }
 
 .docNameRow {
@@ -209,6 +233,7 @@
   color: var(--accent-glow);
 }
 
+/* ===== Action Buttons ===== */
 .actionsGroup {
   display: flex;
   gap: 0.5rem;
@@ -220,33 +245,36 @@
   justify-content: center;
   padding: 0.4rem 0.75rem;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--accent-dark);
+  color: var(--text-primary);
   text-decoration: none;
   transition: var(--transition-smooth);
-  background-color: white;
+  background-color: var(--surface-elevated);
+  cursor: pointer;
 }
 
 .actionBtn:hover {
-  background-color: #F3F4F6;
-  border-color: #94A3B8;
+  background-color: var(--surface-hover);
+  border-color: var(--border-hover);
 }
 
 .actionBtnDelete {
   color: #EF4444;
-  border-color: #FEE2E2;
+  border-color: var(--border-subtle);
 }
 
 .actionBtnDelete:hover {
-  background-color: #FEE2E2;
+  background-color: var(--badge-danger-bg);
   border-color: #FCA5A5;
 }
 
-/* Empty Grid State */
+/* ===== Empty Grid State ===== */
 .emptyGrid {
   text-align: center;
   padding: 3rem 1.5rem;
-  color: var(--accent-muted);
+  color: var(--text-secondary);
+  background-color: var(--surface-secondary);
+  border-radius: var(--radius-lg);
 }

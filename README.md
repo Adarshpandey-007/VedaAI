@@ -44,7 +44,7 @@ The frontend layout has been crafted using **pure Vanilla CSS Modules** to stric
                         | (Invokes with JSON MimeType)
                         v
                +--------+-----------------+
-               |      Gemini 1.5 API      |
+               |   Gemini 3.5 Flash API   |
                +--------------------------+
 ```
 
@@ -61,7 +61,7 @@ To ensure this application runs **instantly** out-of-the-box on your Windows mac
 ---
 
 ## 🤖 AI Prompt Structuring Engine
-We configure the **Gemini 1.5 Flash** model with deep system instructions to produce structured educational papers. We specify the requested question distributions, difficulty partitions (Easy / Moderate / Hard), and integrate extracted terms from your uploaded reference files.
+We configure the **Gemini 3.5 Flash** model with deep system instructions to produce structured educational papers. We specify the requested question distributions, difficulty partitions (Easy / Moderate / Hard), and integrate extracted terms from your uploaded reference files.
 
 - **Native JSON Generation**: We pass `{ responseMimeType: "application/json" }` configuration parameters to the Gemini API. This instructs the model's native syntax parser to return a raw, validated JSON string, eliminating markdown block wrappings and making parsing 100% reliable.
 - **Fail-Safe Mock Engine**: If no `GEMINI_API_KEY` is provided, the service activates an educational mock generator that compiles structured CBSE exams in real-time, letting you verify the Socket progress overlay and printable pages immediately.
@@ -110,9 +110,28 @@ npm run dev
 
 ---
 
+---
+
 ## 🎁 Bonus Features Included (High Signal)
 
-1. **High-Fidelity PDF Vector Print**: We designed modular CSS print pipelines (`@media print` rules inside `globals.css`). Clicking **"Download as PDF"** centers A4 printable pages, scales exam lines, and strips out sidebar navigations and action overlays, outputting high-resolution vector files using the browser's native engine.
-2. **Interactive Speech Mockup**: Click the **Microphone Icon** next to the Additional Instructions textarea. It launches a glowing pulse animation and automatically drafts a structured science lesson search query.
-3. **Teacher Portal HUD Analytics**: The homepage is styled as a premium dashboard portal showing live assessment volumes, active enqueued workers, and total marks metrics.
-4. **Examiner Solution Key**: Generated outputs append a separate Answer Key drawer block. Teachers can click **"Show Full Solutions"** to expand step-by-step guidelines for scoring.
+1. **📝 Interactive Live WYSIWYG Editor**:
+   * Double-clicking or clicking "Edit Mode" on any generated assignment transforms sections, questions, marks, options, and solution sheets into editable fields. Edits are hot-saved back to either MongoDB Atlas or the JSON fallback database on the fly!
+   * The AI Teacher's Toolkit includes a dual-pane live Markdown split editor so you can customize lesson plans or rubrics while previewing them in real-time.
+2. **🟦 Native Microsoft Word (`.doc`) Exporter**:
+   * Built a client-side vector HTML-to-Word converter. With one click, teachers can export structured exams (complete with CBSE headers, student info tables, Section partitions, and solution keys) directly into MS Word format for school template customization—with zero external package bloat!
+3. **📊 Animated SVG Analytics & Stats Dashboard**:
+   * Designed premium, responsive raw SVG components to visualize active teacher workloads:
+     * **Difficulty Donut Chart**: Renders dynamic, glowing HSL curves representing easy/moderate/hard ratios.
+     * **Syllabus Coverage Bar Chart**: Shows animated histograms representing core subject densities.
+     * **Time Saved Ticker**: Calculates administration writing hours saved in real-time based on your generation volume.
+4. **🪄 Scoped Gemini Single-Question "Re-roller / Refiner"**:
+   * Made every single question in the generated paper editable on a granular level. Clicking the `🪄 Re-roll` action next to a question calls a specialized backend Gemini API endpoint to replace it with a new NCERT-compliant item matching the target marks and difficulty.
+5. **🔒 Concurrent Database Concurrency Security (`AsyncLock` + Memory Caching)**:
+   * Programmed an asynchronous mutex lock (`fileLock`) and memory cache buffer (`cachedData`) in `DBStore.ts` to coordinate simultaneous worker and route actions on `db_fallback.json`. Safely blocks write collisions and completely eliminates local database parsing wipeouts.
+6. **🖨️ Glassmorphism Print Preferences Modal**:
+   * Click **"Download as PDF"** to trigger a beautiful modal. Choose **"Print WITH Answers"** or **"Print WITHOUT Answers"** to dynamically restyle the entire page layout for student distribution using custom `@media print` rules.
+7. **🛠️ Modern `pdf-parse` Class Compatibility**:
+   * Modernized PDF reference uploads to correctly utilize named `{ PDFParse }` class instantiations, unlocking high-speed text extraction for extremely large PDF uploads on the backend server.
+8. **🗣️ Interactive Speech Mockup**:
+   * Click the **Microphone Icon** next to the instructions box to launch an animated audio pulse that drafts search prompts on Grade 8 Science NCERT chapters.
+

@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { Wand2, BookOpen, Table, Gamepad2, Copy, Printer, Check, Clock } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useAssignmentStore } from '@/store/assignmentStore';
+import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Toolkit.module.css';
 
 // Custom Markdown Parsers for UI Rendering
@@ -262,6 +263,7 @@ const TOOLS: ToolConfig[] = [
 ];
 
 function ToolkitPageContent() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<ToolType>('lesson');
   const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
   const [topic, setTopic] = useState('');
@@ -438,6 +440,8 @@ function ToolkitPageContent() {
 
   return (
     <div className={styles.container}>
+      <TopHeaderBar pathName="Toolkit" />
+
       <div className={styles.headerText}>
         <h1 className={styles.title}>AI Teacher's Toolkit</h1>
         <p className={styles.subtitle}>Unlock specialized academic micro-wizards powered by Gemini AI to automate core writing tasks.</p>
@@ -728,90 +732,96 @@ function ToolkitPageContent() {
                 <p className={styles.cardDesc}>{activeTool.desc}</p>
               </div>
 
-              <form onSubmit={handleGenerate} className={styles.form}>
-                <div className={styles.formGrid}>
+              <div className={styles.generatorSplit}>
+                <form onSubmit={handleGenerate} className={styles.leftFormPane}>
+                  <div className={styles.formGrid}>
+                    <div className={styles.inputGroup}>
+                      <label className={styles.label}>{activeTool.promptLabel}</label>
+                      <input
+                        type="text"
+                        placeholder={activeTool.promptPlaceholder}
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                        className={styles.input}
+                        required
+                      />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                      <label className={styles.label}>{activeTool.gradeLabel}</label>
+                      <select
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        className={styles.select}
+                      >
+                        <option value="Class 5th">Class 5th</option>
+                        <option value="Class 8th">Class 8th</option>
+                        <option value="Class 10th">Class 10th</option>
+                        <option value="Class 12th">Class 12th</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <div className={styles.inputGroup}>
-                    <label className={styles.label}>{activeTool.promptLabel}</label>
-                    <input
-                      type="text"
-                      placeholder={activeTool.promptPlaceholder}
-                      value={topic}
-                      onChange={(e) => setTopic(e.target.value)}
-                      className={styles.input}
-                      required
+                    <label className={styles.label}>Custom Directives / Syllabus Alignment (Optional)</label>
+                    <textarea
+                      placeholder="e.g. Include laboratory experiments, highlight NCERT section coordinates, prioritize difficulty balancing..."
+                      value={instructions}
+                      onChange={(e) => setInstructions(e.target.value)}
+                      className={styles.textarea}
+                      style={{ height: '140px' }}
                     />
                   </div>
 
-                  <div className={styles.inputGroup}>
-                    <label className={styles.label}>{activeTool.gradeLabel}</label>
-                    <select
-                      value={grade}
-                      onChange={(e) => setGrade(e.target.value)}
-                      className={styles.select}
-                    >
-                      <option value="Class 5th">Class 5th</option>
-                      <option value="Class 8th">Class 8th</option>
-                      <option value="Class 10th">Class 10th</option>
-                      <option value="Class 12th">Class 12th</option>
-                    </select>
-                  </div>
-                </div>
+                  <button type="submit" className={styles.submitBtn} disabled={loading}>
+                    <Wand2 size={16} />
+                    <span>{loading ? 'Compiling AI Prompt...' : 'Generate with AI'}</span>
+                  </button>
+                </form>
 
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Custom Directives / Syllabus Alignment (Optional)</label>
-                  <textarea
-                    placeholder="e.g. Include laboratory experiments, highlight NCERT section coordinates, prioritize difficulty balancing..."
-                    value={instructions}
-                    onChange={(e) => setInstructions(e.target.value)}
-                    className={styles.textarea}
-                  />
-                </div>
+                <div className={styles.rightPreviewPane}>
+                  {loading ? (
+                    <div className={styles.loaderContainer}>
+                      <div className={styles.spinner} />
+                      <span className={styles.loaderText}>Gemini AI is analyzing syllabus objectives & compiling structure...</span>
+                    </div>
+                  ) : error ? (
+                    <div style={{ color: '#EF4444', backgroundColor: '#FEE2E2', padding: '1rem', borderRadius: '12px', fontWeight: 600 }}>
+                      ⚠️ Generation Error: {error}
+                    </div>
+                  ) : output ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', height: '100%' }}>
+                      <div className={styles.outputHeader}>
+                        <h3 className={styles.outputTitle}>AI Generated Asset Draft</h3>
+                        
+                        <div className={styles.actionsGroup}>
+                          <button className={styles.actionBtn} onClick={handleCopy}>
+                            {copied ? <Check size={14} style={{ color: '#22C55E' }} /> : <Copy size={14} />}
+                            <span>{copied ? 'Copied!' : 'Copy'}</span>
+                          </button>
+                          <button className={styles.actionBtn} onClick={handlePrint}>
+                            <Printer size={14} />
+                            <span>Print Outline</span>
+                          </button>
+                        </div>
+                      </div>
 
-                <button type="submit" className={styles.submitBtn} disabled={loading}>
-                  <Wand2 size={16} />
-                  <span>{loading ? 'Compiling AI Prompt...' : 'Generate with AI'}</span>
-                </button>
-              </form>
+                      <div className={styles.contentDisplay} style={{ flex: 1, maxHeight: '350px' }}>
+                        {parseMarkdownToReact(output)}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={styles.previewPlaceholder}>
+                      <div className={styles.placeholderIcon}>🪄</div>
+                      <h4 className={styles.placeholderTitle}>Interactive AI Workspace</h4>
+                      <p className={styles.placeholderDesc}>
+                        Your dynamic lesson plan, rubric, or activity draft will appear here. Fill in the syllabus specifications on the left to start compiling.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </>
-          )}
-
-          {/* Loader HUD */}
-          {loading && (
-            <div className={styles.loaderContainer}>
-              <div className={styles.spinner} />
-              <span className={styles.loaderText}>Gemini AI is analyzing syllabus objectives & compiling structure...</span>
-            </div>
-          )}
-
-          {/* Error Banner */}
-          {error && (
-            <div style={{ color: '#EF4444', backgroundColor: '#FEE2E2', padding: '1rem', borderRadius: '12px', fontWeight: 600 }}>
-              ⚠️ Generation Error: {error}
-            </div>
-          )}
-
-          {/* Results Output Block */}
-          {output && (
-            <div className={styles.outputBox}>
-              <div className={styles.outputHeader}>
-                <h3 className={styles.outputTitle}>AI Generated Asset Draft</h3>
-                
-                <div className={styles.actionsGroup}>
-                  <button className={styles.actionBtn} onClick={handleCopy}>
-                    {copied ? <Check size={14} style={{ color: '#22C55E' }} /> : <Copy size={14} />}
-                    <span>{copied ? 'Copied!' : 'Copy'}</span>
-                  </button>
-                  <button className={styles.actionBtn} onClick={handlePrint}>
-                    <Printer size={14} />
-                    <span>Print Outline</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.contentDisplay}>
-                {parseMarkdownToReact(output)}
-              </div>
-            </div>
           )}
         </main>
       </div>

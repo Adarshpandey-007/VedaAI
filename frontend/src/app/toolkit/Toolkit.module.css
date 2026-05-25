@@ -1,10 +1,34 @@
+/* ─────────────────────────────────────────────────────
+   Toolkit Module — Premium Minimalist Design
+   ───────────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Container ── */
 .container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ── Header ── */
 .headerText {
   display: flex;
   flex-direction: column;
@@ -12,21 +36,22 @@
 }
 
 .title {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: var(--accent-dark);
+  color: var(--text-primary);
 }
 
 .subtitle {
-  font-size: 0.9rem;
-  color: var(--accent-muted);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
 }
 
+/* ── Workspace Grid ── */
 .workspace {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 2rem;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
   width: 100%;
   align-items: start;
 }
@@ -37,57 +62,67 @@
   }
 }
 
-/* Sidebar Tabs Selector */
+/* ── Sidebar Tabs ── */
 .tabsSidebar {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 1.25rem;
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-xl); /* Symmetric fully rounded corners matching the main canvas card */
+  padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 1024px) {
+  .tabsSidebar {
+    border-radius: var(--radius-xl);
+  }
 }
 
 .tabBtn {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.9rem 1.25rem;
+  padding: 0.55rem 0.85rem;
   width: 100%;
-  border-radius: 12px;
-  color: var(--accent-muted);
-  font-weight: 700;
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.82rem;
   transition: var(--transition-smooth);
   text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
 }
 
 .tabBtn:hover {
-  background-color: #F3F4F6;
-  color: var(--accent-dark);
+  background-color: var(--surface-secondary);
+  color: var(--text-primary);
 }
 
 .tabBtnActive {
-  background-color: rgba(255, 78, 32, 0.08);
+  background-color: var(--accent-glow-light);
   color: var(--accent-glow);
+  font-weight: 600;
 }
 
 .tabBtnActive:hover {
-  background-color: rgba(255, 78, 32, 0.12);
+  background-color: var(--accent-glow-light);
   color: var(--accent-glow);
 }
 
-/* Right-side canvas options */
+/* ── Canvas Card ── */
 .canvasCard {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1rem;
 }
 
 .cardHeader {
@@ -95,24 +130,26 @@
   flex-direction: column;
   gap: 0.25rem;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 1rem;
+  padding-bottom: 0.75rem;
 }
 
 .cardTitle {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--accent-dark);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .cardDesc {
-  font-size: 0.85rem;
-  color: var(--accent-muted);
+  font-size: 0.84rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
 }
 
+/* ── Form Grid ── */
 .formGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 1.25rem;
+  gap: 0.85rem;
 }
 
 @media (max-width: 768px) {
@@ -128,34 +165,48 @@
 }
 
 .label {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  color: var(--accent-dark);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.input, .select, .textarea {
+/* ── Inputs ── */
+.input,
+.select,
+.textarea {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background-color: var(--bg-input);
-  color: var(--accent-dark);
-  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-size: 0.82rem;
   outline: none;
   transition: var(--transition-smooth);
 }
 
-.input:focus, .select:focus, .textarea:focus {
-  border-color: var(--accent-glow);
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(255, 78, 32, 0.1);
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--border-focus);
+  background-color: var(--surface-elevated);
+  box-shadow: 0 0 0 3px var(--accent-glow-light);
 }
 
 .textarea {
   resize: vertical;
   min-height: 80px;
+  line-height: 1.6;
 }
 
+/* ── Submit Button ── */
 .submitBtn {
   display: flex;
   align-items: center;
@@ -163,33 +214,42 @@
   gap: 0.5rem;
   background-color: var(--accent-glow);
   color: white;
-  font-weight: 700;
-  padding: 0.9rem 2rem;
-  border-radius: 12px;
+  font-weight: 600;
+  padding: 0.55rem 1.5rem;
+  border-radius: var(--radius-pill);
   box-shadow: var(--shadow-button-glow);
   transition: var(--transition-smooth);
   align-self: flex-start;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
 }
 
 .submitBtn:hover {
-  background-color: #E03E15;
+  filter: brightness(1.08);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 .submitBtn:disabled {
-  background-color: #CBD5E1;
-  color: #94A3B8;
+  background-color: var(--border-hover);
+  color: var(--accent-muted);
   box-shadow: none;
   cursor: not-allowed;
+  transform: none;
+  filter: none;
 }
 
-/* Output Display Area */
+/* ── Output Display Area ── */
 .outputBox {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  border-top: 1px solid var(--border-color);
-  padding-top: 1.75rem;
+  gap: 0.75rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.25rem;
 }
 
 .outputHeader {
@@ -199,50 +259,53 @@
 }
 
 .outputTitle {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--accent-dark);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
+/* ── Action Buttons ── */
 .actionsGroup {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .actionBtn {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.9rem;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--accent-dark);
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
   transition: var(--transition-smooth);
-  background-color: white;
+  background-color: var(--surface-elevated);
+  cursor: pointer;
 }
 
 .actionBtn:hover {
-  background-color: #F9FAFB;
-  border-color: #94A3B8;
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-primary);
 }
 
+/* ── Content Display ── */
 .contentDisplay {
-  background-color: #FFFFFF;
-  color: #0F172A;
-  border-radius: 20px;
-  padding: 2.5rem;
+  background-color: var(--surface-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
   font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 0.88rem;
+  line-height: 1.75;
   max-height: 700px;
   overflow-y: auto;
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
 }
 
-/* Loading HUD inside display */
+/* ── Loading State ── */
 .loaderContainer {
   display: flex;
   flex-direction: column;
@@ -254,20 +317,200 @@
 }
 
 .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(255, 78, 32, 0.1);
+  width: 30px;
+  height: 30px;
+  border: 3px solid transparent;
   border-top-color: var(--accent-glow);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.75s linear infinite;
 }
 
 .loaderText {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--accent-muted);
+  color: var(--text-tertiary);
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* ── Desktop Top Navigation Header Bar ── */
+.topHeaderBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 0 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-card);
 }
+
+.topHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.backArrowBtn {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.backArrowBtn:hover {
+  background-color: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.topHeaderPath {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.topHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.bellBtn {
+  background: none;
+  border: none;
+  position: relative;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.bellBtn:hover {
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.bellDot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  background-color: var(--badge-danger-text);
+  border-radius: 50%;
+  border: 1px solid var(--bg-card);
+}
+
+.profileBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.profileBadge:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-hover);
+}
+
+.avatarImage {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: var(--surface-secondary);
+}
+
+.profileName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.profileChevron {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+}
+
+.generatorSplit {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .generatorSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftFormPane {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rightPreviewPane {
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 400px;
+  position: relative;
+  justify-content: center;
+}
+
+.previewPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: var(--text-tertiary);
+  height: 100%;
+}
+
+.placeholderIcon {
+  font-size: 2.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.placeholderTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.placeholderDesc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  max-width: 320px;
+  line-height: 1.5;
+}
+

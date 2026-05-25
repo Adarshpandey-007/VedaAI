@@ -31,6 +31,7 @@ export default function RootLayout({
       <head>
         <title>VedaAI - AI Assessment Creator</title>
         <meta name="description" content="Generate high-quality school exam papers using cutting-edge AI engines." />
+        <link rel="icon" href="/logo 1.png" type="image/png" />
       </head>
       <body>
         <div className="app-container">
