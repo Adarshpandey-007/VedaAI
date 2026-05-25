@@ -8,11 +8,8 @@ import {
   FileText, 
   CheckCircle, 
   Clock, 
-  Wand2, 
   ChevronRight, 
-  Award,
-  Sparkles,
-  BookOpen
+  Award
 } from 'lucide-react';
 import TopHeaderBar from '@/components/TopHeaderBar';
 import styles from './Dashboard.module.css';
@@ -30,6 +27,7 @@ export default function DashboardHome() {
 
   const completedCount = assignments.filter(a => a.status === 'completed').length;
   const activeJobsCount = assignments.filter(a => a.status === 'processing' || a.status === 'pending').length;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const failedJobsCount = assignments.filter(a => a.status === 'failed').length;
 
   // 1. Difficulty balance calculations
@@ -142,7 +140,7 @@ export default function DashboardHome() {
         month: '2-digit',
         year: 'numeric'
       });
-    } catch (e) {
+    } catch {
       return isoString;
     }
   };
@@ -405,33 +403,39 @@ export default function DashboardHome() {
         {/* AI Toolkit Helper Column */}
         <div className={styles.blockCard}>
           <div className={styles.blockHeader}>
-            <h2 className={styles.blockTitle}>AI Teacher's Toolkit</h2>
+            <h2 className={styles.blockTitle}>AI Teacher&apos;s Toolkit</h2>
           </div>
 
           <div className={styles.toolkitGrid}>
-            <div className={styles.toolItem}>
-              <div style={{ fontSize: '1.5rem' }}>🪄</div>
-              <div className={styles.toolText}>
-                <span className={styles.toolTitle}>CBSE Prompt Generator</span>
-                <span className={styles.toolDesc}>Structures chapters into NCERT-standard Sections instantly.</span>
+            <Link href="/toolkit?tab=lesson" className={styles.toolLink}>
+              <div className={styles.toolItem}>
+                <div style={{ fontSize: '1.5rem' }}>🪄</div>
+                <div className={styles.toolText}>
+                  <span className={styles.toolTitle}>CBSE Prompt Generator</span>
+                  <span className={styles.toolDesc}>Structures chapters into NCERT-standard Sections instantly.</span>
+                </div>
               </div>
-            </div>
+            </Link>
 
-            <div className={styles.toolItem}>
-              <div style={{ fontSize: '1.5rem' }}>🎯</div>
-              <div className={styles.toolText}>
-                <span className={styles.toolTitle}>Dynamic Rubrics Creator</span>
-                <span className={styles.toolDesc}>Set target difficulties and watch standard distributions form.</span>
+            <Link href="/toolkit?tab=rubric" className={styles.toolLink}>
+              <div className={styles.toolItem}>
+                <div style={{ fontSize: '1.5rem' }}>🎯</div>
+                <div className={styles.toolText}>
+                  <span className={styles.toolTitle}>Dynamic Rubrics Creator</span>
+                  <span className={styles.toolDesc}>Set target difficulties and watch standard distributions form.</span>
+                </div>
               </div>
-            </div>
+            </Link>
 
-            <div className={styles.toolItem}>
-              <div style={{ fontSize: '1.5rem' }}>🔑</div>
-              <div className={styles.toolText}>
-                <span className={styles.toolTitle}>Instant Answer Sheets</span>
-                <span className={styles.toolDesc}>Full procedural answer keys compiled with each generated exam.</span>
+            <Link href="/toolkit?tab=activity" className={styles.toolLink}>
+              <div className={styles.toolItem}>
+                <div style={{ fontSize: '1.5rem' }}>🔑</div>
+                <div className={styles.toolText}>
+                  <span className={styles.toolTitle}>Instant Answer Sheets</span>
+                  <span className={styles.toolDesc}>Full procedural answer keys compiled with each generated exam.</span>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
 

@@ -296,11 +296,11 @@ function ToolkitPageContent() {
   }, [fetchToolkitItems]);
 
   useEffect(() => {
-    if (queryTab === 'history') {
+    if (queryTab && ['lesson', 'rubric', 'activity', 'history'].includes(queryTab)) {
       // wrapped in setTimeout to prevent React cascading render warnings / ESLint error
       setTimeout(() => {
-        setActiveTab('history');
-        if (queryId) {
+        setActiveTab(queryTab as ToolType);
+        if (queryTab === 'history' && queryId) {
           setSelectedHistoryId(queryId);
         }
       }, 0);

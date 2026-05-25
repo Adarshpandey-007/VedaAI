@@ -393,3 +393,9 @@
   color: var(--text-tertiary);
   line-height: 1.35;
 }
+
+.toolLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
