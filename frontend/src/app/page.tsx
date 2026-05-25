@@ -298,7 +298,7 @@ export default function DashboardHome() {
               const pct = (sub.count / maxSubCount) * 100;
               const barColor = sIdx === 0 ? '#6366F1' : sIdx === 1 ? '#818CF8' : '#A78BFA';
               return (
-                <div key={sub.name} style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                <div key={`${sub.name}-${sIdx}`} style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>
                     <span>{sub.name}</span>
                     <span>{sub.count} Papers</span>
