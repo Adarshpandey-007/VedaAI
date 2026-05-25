@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Log requests in development
-app.use((req, res, next) => {
+app.use((req: any, res: any, next: any) => {
   console.log(`[HTTP] ${req.method} ${req.url}`);
   next();
 });
@@ -43,7 +43,7 @@ app.use('/api/assignments', assignmentRoutes);
 app.use('/api/toolkit', toolkitRoutes);
 
 // Base healthcheck route
-app.get('/health', (req, res) => {
+app.get('/health', (req: any, res: any) => {
   res.status(200).json({
     status: 'healthy',
     mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'running in fallback mode',

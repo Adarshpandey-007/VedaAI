@@ -127,7 +127,7 @@ export class AssignmentController {
 
       // Queue background job
       const uploadedFiles = req.files && Array.isArray(req.files)
-        ? req.files.map(f => ({ path: f.path, mimetype: f.mimetype }))
+        ? req.files.map((f: any) => ({ path: f.path, mimetype: f.mimetype }))
         : [];
       await QueueManager.addJob(newAssignment.id, sourceText, uploadedFiles);
 
