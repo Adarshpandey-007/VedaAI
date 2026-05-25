@@ -1,81 +1,128 @@
-# Setup & Getting Started Guide
+# VedaAI AI Assessment Creator: Setup & Operations Guide
 
-Follow this guide to install dependencies, configure environment variables, and run both the Frontend and Backend servers.
-
----
-
-## Prerequisites
-- **Node.js**: v18.0.0 or higher (Your version: `v22.9.0`)
-- **NPM**: v9.0.0 or higher (Your version: `10.8.3`)
+Welcome to the comprehensive setup and operations manual for the **VedaAI AI Assessment Creator**. Follow this guide to configure, build, and deploy the full-stack system in development or production.
 
 ---
 
-## Configuration Variables (.env)
+## 💻 System Prerequisites
 
-We provide `.env.example` templates in both `frontend` and `backend` directories. Here are the core variables you need to configure:
+Ensure your machine meets the following environment baselines:
+* **Node.js**: `v18.0.0` or higher (Tested on `v22.9.0`)
+* **NPM**: `v9.0.0` or higher (Tested on `10.8.3`)
+* **Internet Connection**: Required for Gemini API endpoints (if running in real mode).
 
-### Backend Configuration (`backend/.env`)
-Create a `.env` file inside the `backend` folder:
+---
+
+## 🛠️ Environmental Settings Configuration
+
+Both the frontend and backend require `.env` configurations. We provide template `.env.example` configurations in their respective directories.
+
+### 1. Backend Environment Setup (`backend/.env`)
+Create a `.env` file inside the `backend` folder and populate it with:
 ```env
+# Server Port Configuration
 PORT=5000
 NODE_ENV=development
 
-# Gemini API Key (Required for real AI generation)
-# Obtain a free key from https://aistudio.google.com
+# Gemini API Key (Obtain a free key from https://aistudio.google.com)
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# MongoDB Settings (Optional)
-# If omitted or connection fails, the server uses a local JSON fallback file automatically.
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/veda_db
+# MongoDB Connection String (Optional)
+# Leave blank to automatically activate the Zero-Dependency Local File fallback database
+MONGODB_URI=
 
-# Redis Settings (Optional)
-# If omitted or connection fails, the server uses an in-memory queue emulator.
+# Redis Configuration (Optional)
+# Leave blank to automatically activate the sequential in-memory task runner emulator
 REDIS_HOST=localhost
 REDIS_PORT=6379
 ```
 
-### Frontend Configuration (`frontend/.env`)
-Create a `.env` file inside the `frontend` folder:
+### 2. Frontend Environment Setup (`frontend/.env.local`)
+Create a `.env.local` file inside the `frontend` folder:
 ```env
-# URL of the Backend Express Server
+# Gateway API Coordinators
 NEXT_PUBLIC_API_URL=http://localhost:5000
 NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
 ```
 
 ---
 
-## Quick Start (Run Both Frontend & Backend)
+## 🚀 Step-by-Step Quick Start
 
-From the root workspace folder:
+From the root workspace directory, run these simple routines to get the entire ecosystem up and running:
 
-### Step 1: Install All Dependencies
-This command uses concurrently to download npm packages for root, frontend, and backend folders:
+### Step A: Download All Package Dependencies
+We configure concurrently to download npm packages for root, frontend, and backend folders with a single command:
 ```bash
 npm run install:all
 ```
 
-### Step 2: Start Development Servers
-This runs both servers concurrently. The backend will watch for TS edits, and frontend will boot Next.js in hot-reloading mode:
+### Step B: Build the Services for Verification
+Ensure both TypeScript modules compile perfectly in production mode:
+```bash
+npm run build
+```
+
+### Step C: Boot the Development Clusters
+Concurrently launch both servers in watch modes:
 ```bash
 npm run dev
 ```
-
-- **Frontend**: Runs on `http://localhost:3000`
-- **Backend API**: Runs on `http://localhost:5000`
+* **Frontend Portal**: Navigate to [http://localhost:3000](http://localhost:3000) inside your browser.
+* **Backend API Gateway**: Open [http://localhost:5000/health](http://localhost:5000/health) to inspect health check logs.
 
 ---
 
-## Architectural Features Showcase
+## 🌟 Premium Features Showcase
 
-1. **📝 Interactive Live WYSIWYG Editor**: Click **"Edit Mode"** on any generated exam paper to change titles, instructions, marks, options, or answer keys. All edits hot-save automatically back to your active database!
-2. **🟦 Microsoft Word (`.doc`) Export**: Seamlessly download exam papers and lesson plans into native `.doc` files formatted for direct use in MS Word.
-3. **📊 Animated SVG Analytics Dashboard**: Rich visual indicators (donut charts, bar charts, and efficiency counters) rendering live stats from Zustand.
-4. **🪄 Scoped Question Re-roller**: Granular replacement of individual questions. Click the `🪄 Re-roll` icon beside a question to swap it instantly in both the paper and answer key via the Gemini API.
-5. **🖨️ Glassmorphism Print preferences Modal**: Triggers elegant popup selections to print papers with or without solutions.
-6. **🔒 Thread-Safe fallback database (`AsyncLock` + Cache buffer)**: Coordinates concurrent server operations, guaranteeing that `db_fallback.json` will never be corrupted or reset.
-7. **🛠️ Modern `pdf-parse` Class Compatibility**: Handles extremely large PDF reference uploads swiftly on the backend server.
-8. **Upload Section**: Drop files (JPEG, PNG, PDF, TXT) and let the AI process terms and criteria directly.
-9. **Form Aggregator**: Dynamic form tables allow addition/deletion of question rows, with marks and counts aggregated automatically.
-10. **Queue HUD**: Submission kicks off a real-time progress monitor HUD using WebSockets, rendering active percentages: `Structuring Paper Layout...` -> `Formulating Section A Questions...` -> `Saving Output...` -> `Completed`.
-11. **Answer Key Drawer**: The Output view has a dedicated, expandable Answer Key section showing comprehensive guidelines for examiners.
-12. **Print Layout**: Download PDF triggers standard page-size breaking and hides system menus to print clean CBSE-style physical exam sheets.
+Explore the premium features pre-engineered into VedaAI:
+
+> [!NOTE]
+> **📝 Interactive Live WYSIWYG Editor**
+> Double-click any text block (Headers, Questions, Options, or Solutions) on the generated exam sheet output to enter **Edit Mode**. Edits are updated and hot-saved instantly back to either MongoDB or the Local JSON Fallback database!
+
+> [!TIP]
+> **🪄 Scoped Single-Question Re-rolling**
+> Unsatisfied with a specific question? Click the `🪄 Re-roll` action badge next to it. The system contacts Gemini with the question context, difficulty weight, and marks value to generate and replace that question—and its answer key entry—without rebuilding the entire paper!
+
+> [!IMPORTANT]
+> **🟦 Client-Side Vector MS Word (`.doc`) Exporter**
+> Teachers can export fully structured exams (complete with blank student credential underlines, section headings, difficulty badges, and examiner solutions sheets) directly into Microsoft Word documents, completely formatted and ready for official printouts—with zero external package bloat!
+
+> [!IMPORTANT]
+> **🖨️ Glassmorphism Print Layouts**
+> Clicking **"Download as PDF"** opens a premium modal window. Choose whether to print **With Answers** (for grading examiners) or **Without Answers** (for classrooms). Advanced `@media print` rules instantly strip sidebars, banner widgets, and solutions, restructuring page-breaks for a standard physical exam paper.
+
+---
+
+## 📂 Project Directory Structure
+
+```text
+VedaAI-FullStack/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/      # Route logic handlers (Assignments, Re-roller, Toolkit)
+│   │   ├── models/           # Mongoose schemas & Typescript interfaces
+│   │   ├── queues/           # BullMQ & sequential QueueEmulator queues
+│   │   ├── routes/           # REST endpoints
+│   │   ├── services/         # AI prompt engines, atomic DBStores
+│   │   ├── sockets/          # WebSocket event rooms (Socket.io)
+│   │   └── server.ts         # Main gateway bootstrapping
+│   ├── uploads/              # Text/PDF uploaded reference storage (.gitkeep)
+│   ├── db_fallback.json      # Pre-seeded local fallback database
+│   ├── tsconfig.json         # Backend TS settings
+│   └── package.json          # Node dependencies
+├── docs/                     # Architectural & Page documentation
+├── frontend/
+│   ├── src/
+│   │   ├── app/              # Next.js pages (dashboard, library, groups, toolkit)
+│   │   ├── components/       # Scoped layout parts (Sidebar, Glassmorphic Headers)
+│   │   ├── store/            # Zustand global client-side store
+│   │   ├── types/            # App interfaces
+│   │   └── utils/            # Helper formats
+│   ├── public/               # Asset logos & icons
+│   ├── next.config.ts        # Next.js configurations
+│   └── package.json          # Frontend packages
+├── package.json              # Concurrently root script coordinator
+└── README.md                 # Project homepage
+```

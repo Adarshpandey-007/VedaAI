@@ -1,76 +1,80 @@
-# VedaAI – AI Assessment Creator (Full-Stack Challenge)
+# 🌟 VedaAI – AI Assessment Creator (Full-Stack Engineering Challenge)
 
-Welcome to the **VedaAI AI Assessment Creator**! This application is built as part of the Full-Stack Developer recruitment challenge. It allows teachers to create assignments, upload reference materials, configure dynamic question types, and generate structured school examination question papers using cutting-edge AI engines.
+Welcome to the **VedaAI AI Assessment Creator**! This application is engineered as the ultimate Full-Stack recruitment challenge submission for VedaAI. It enables teachers to effortlessly compile CBSE or NCERT school-standard examination question papers, manage assignments, extract material references, and customize AI-generated output with zero friction.
 
 ---
 
 ## 🎨 Figma-to-Code Pixel Perfect Replication
-The frontend layout has been crafted using **pure Vanilla CSS Modules** to strictly match the visual aesthetics from the Figma files:
-- **Glowing Accent Theme**: Leveraging custom Outfit & Inter typography with HSL Tailored color variables and custom shadows matching the orange-red button borders (`#FF4E20`).
-- **Dynamic Creation Form**: Features interactive sliders, file upload dotted zones, dynamic question row aggregates (count + marks calculated live), and voice feedback widgets.
-- **CBSE Examination Print Layout**: Output exams render standard CBSE school headers, student credentials panels, difficulty tags, and toggleable Examiner Answer Keys.
-- **Full Responsive UX**: Adapts to mobile devices using a dark floating bottom navigation tab bar matching standard application panels.
+The interface is designed strictly to mirror the Figma specifications, using **pure Vanilla CSS Modules** for layout formatting:
+* **Glowing Modern Dark Accents**: Custom integrations of `Outfit` and `Inter` typography from Google Fonts, harmonized with dynamic HSL-tailored orange-red accents (`#FF4E20`) and glassmorphic panels.
+* **Intelligent Assessment Form**: Features drag-and-drop dotted zones for file uploads, live aggregating question tables (counts and marks computed in real-time), and vocal instructions helper widgets.
+* **Official CBSE Examination Canvas**: The output views print physical A4 CBSE examination grids, student credentials sections, color-coded difficulty tags, and a toggleable Examiner Answer Key.
+* **Full Fluid Responsive UX**: Fluidly adjusts to tablets and mobile sizes, utilizing floating responsive dark bottom bars.
 
 ---
 
-## 🏗️ High-Level System Architecture
+## 🏗️ Decoupled System Architecture
 
 ```text
-               +----------------------------------+
-               |  Next.js Frontend (Zustand State) |
-               +----------------+-----------------+
-                                |
-                   (HTTP POST)  |  (WebSocket Live Ticks)
-                   Submissions  |  Progress percentages
-                                v
-               +----------------+-----------------+
-               |      Express API Gateway         |
-               +--------+----------------+--------+
-                        |                |
-             (Save Job) |                | (Upsert Records)
-                        v                v
-      +-----------------+-----+    +-----+--------------------+
-      |  Queue Manager        |    | Database Store           |
-      |  - BullMQ (Real Mode) |    | - MongoDB (Real Mode)    |
-      |  - Emulator (Fallback)|    | - Local JSON (Fallback)  |
-      +-----------------+-----+    +--------------------------+
-                        |
-      (Spawns Workers)  |
-                        v
-               +--------+-----------------+
-               |  Background Worker       |
-               +--------+-----------------+
-                        |
-                        | (Invokes with JSON MimeType)
-                        v
-               +--------+-----------------+
-               |   Gemini 3.5 Flash API   |
-               +--------------------------+
+               +--------------------------------------+
+               |   Next.js Frontend (Zustand Store)   |
+               +------------------+-------------------+
+                                  |
+                     (HTTP POST)  |  (WebSocket Live Ticks)
+                     Submissions  |  Progress percentages
+                                  v
+               +------------------+-------------------+
+               |       Express API Gateway            |
+               +----------+----------------+----------+
+                          |                |
+               (Save Job) |                | (Upsert Records)
+                          v                v
+        +-----------------+-----+    +-----+--------------------+
+        |   Queue Manager       |    |   Database Store         |
+        |   - BullMQ (Real Mode)|    |   - MongoDB (Real Mode)  |
+        |   - Emulator (Fallback)|   |   - Local JSON (Fallback)|
+        +-----------------+-----+    +--------------------------+
+                          |
+        (Spawns Workers)  |
+                          v
+                 +--------+------------------+
+                 |    Background Worker      |
+                 +--------+------------------+
+                          |
+                          | (Invokes with JSON MimeType)
+                          v
+                 +--------+------------------+
+                 |   Gemini 3.5 Flash API    |
+                 +---------------------------+
 ```
 
 ---
 
-## 🛡️ Dual-Mode Resilience (Zero-Dependency Setup)
-To ensure this application runs **instantly** out-of-the-box on your Windows machine without requiring pre-installed system servers, we engineered an intelligent **Dual-Mode Repository & Queue Fallback**:
+## 🛡️ Zero-Dependency Dual-Mode Resilience
 
-1. **Database Layer (MongoDB Fallback)**: On boot, the server attempts connection to your MongoDB URI. If omitted or unreachable, it dynamically falls back to a **Local File Store Repository** (`backend/db_fallback.json`). All CRUD actions (create, delete, list) write to this local file using atomic asynchronous locks.
-2. **Task Queue Layer (Redis & BullMQ Fallback)**: The background worker attempts connection to your Redis coordinates. If offline, it activates our custom **In-Memory Sequential Queue Emulator** (`QueueEmulator`). Jobs are enqueued in Node's async event loop, executing AI routines and broadcasting WebSockets updates identically to BullMQ!
+To ensure that this assignment runs **instantly** out-of-the-box on your local machine without requiring pre-installed infrastructure clusters, we engineered an intelligent **Dual-Mode Architecture Failover**:
 
-*If your local MongoDB and Redis instances are running, the server connects normally using Mongoose and BullMQ.*
+> [!IMPORTANT]
+> **Database Auto-Failover (MongoDB / File Store)**
+> On boot, the server attempts a Mongoose connection. If the `MONGODB_URI` environment variable is omitted or unreachable, it dynamically falls back to an **Atomic File Storage Repository** (`backend/db_fallback.json`). Data reads/writes are secured using `async-lock` mutexes alongside memory-caching buffers to block concurrent anomalies!
 
----
-
-## 🤖 AI Prompt Structuring Engine
-We configure the **Gemini 3.5 Flash** model with deep system instructions to produce structured educational papers. We specify the requested question distributions, difficulty partitions (Easy / Moderate / Hard), and integrate extracted terms from your uploaded reference files.
-
-- **Native JSON Generation**: We pass `{ responseMimeType: "application/json" }` configuration parameters to the Gemini API. This instructs the model's native syntax parser to return a raw, validated JSON string, eliminating markdown block wrappings and making parsing 100% reliable.
-- **Fail-Safe Mock Engine**: If no `GEMINI_API_KEY` is provided, the service activates an educational mock generator that compiles structured CBSE exams in real-time, letting you verify the Socket progress overlay and printable pages immediately.
+> [!IMPORTANT]
+> **Queue Auto-Failover (Redis & BullMQ / Queue Emulator)**
+> The background worker attempts to connect to Redis. If Redis is offline or omitted, it instantly launches our custom **In-Memory Sequential Queue Emulator** (`QueueEmulator.ts`). Jobs are enqueued in Node's async event loop, executing Gemini generations and broadcasting progress updates identically to BullMQ!
 
 ---
 
-## 🚀 Getting Started & Setup Guide
+## 🤖 Gemini AI Prompt Optimization
 
-### 1. Configure Environmental Settings
+We configure **Gemini 3.5 Flash** with deep CBSE blueprints to compile professional examination papers:
+* **Native JSON Schema Generation**: We pass the `{ responseMimeType: "application/json" }` configuration parameter to the Gemini API, forcing it to return a raw, validated JSON string, eliminating markdown block wrapping and making parsing 100% reliable.
+* **Pre-Seeded Offline Mode**: We pre-seeded `db_fallback.json` with a beautiful sample CBSE paper based on a real textbook context. This allows you to evaluate the platform's outputs, interactive tools, and print templates **immediately on boot**, even without setting up a Gemini API Key!
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Configure Environments
 Create a `.env` file in the `backend` directory:
 ```env
 PORT=5000
@@ -80,7 +84,7 @@ NODE_ENV=development
 GEMINI_API_KEY=your_key_here
 
 # MongoDB Connection String (Optional - defaults to fallback JSON file)
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/veda_db
+MONGODB_URI=
 
 # Redis Connection (Optional - defaults to fallback Queue Emulator)
 REDIS_HOST=localhost
@@ -93,45 +97,44 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
 ```
 
-### 2. Fast-Install All Folders
-From the workspace root directory, run:
+### 2. Install Packages
+From the root workspace directory, run:
 ```bash
 npm run install:all
 ```
-*This concurrently downloads npm packages for root, frontend, and backend folders.*
+*This concurrent command downloads all npm packages for the root, frontend, and backend folders.*
 
-### 3. Spin Up Development Servers
-Launch both servers concurrently:
+### 3. Build Codebases
+Verify that the TypeScript build succeeds:
+```bash
+npm run build
+```
+
+### 4. Boot Dev Servers
+Concurrently launch both servers:
 ```bash
 npm run dev
 ```
-- **Frontend Panel**: Open `http://localhost:3000` to access the main Teacher Dashboard.
-- **Backend API**: Accessible at `http://localhost:5000`.
+* **Frontend Portal**: Open [http://localhost:3000](http://localhost:3000)
+* **Backend API Gateway**: Accessible at [http://localhost:5000](http://localhost:5000)
 
 ---
 
----
-
-## 🎁 Bonus Features Included (High Signal)
+## 🎁 Premium Features Showcase (High-Signal Bonuses)
 
 1. **📝 Interactive Live WYSIWYG Editor**:
-   * Double-clicking or clicking "Edit Mode" on any generated assignment transforms sections, questions, marks, options, and solution sheets into editable fields. Edits are hot-saved back to either MongoDB Atlas or the JSON fallback database on the fly!
-   * The AI Teacher's Toolkit includes a dual-pane live Markdown split editor so you can customize lesson plans or rubrics while previewing them in real-time.
+   * Double-clicking or clicking "Edit Mode" on any generated assignment transforms headers, question statements, marks, options, and solutions into live inputs. Changes are auto-saved back to the active database in real-time!
 2. **🟦 Native Microsoft Word (`.doc`) Exporter**:
-   * Built a client-side vector HTML-to-Word converter. With one click, teachers can export structured exams (complete with CBSE headers, student info tables, Section partitions, and solution keys) directly into MS Word format for school template customization—with zero external package bloat!
+   * Features a client-side HTML-to-Word vector converter. With a single click, teachers can export fully formatted CBSE papers (including exam headers, section layouts, and answer keys) directly into MS Word files—with zero package bloat!
 3. **📊 Animated SVG Analytics & Stats Dashboard**:
-   * Designed premium, responsive raw SVG components to visualize active teacher workloads:
-     * **Difficulty Donut Chart**: Renders dynamic, glowing HSL curves representing easy/moderate/hard ratios.
-     * **Syllabus Coverage Bar Chart**: Shows animated histograms representing core subject densities.
-     * **Time Saved Ticker**: Calculates administration writing hours saved in real-time based on your generation volume.
-4. **🪄 Scoped Gemini Single-Question "Re-roller / Refiner"**:
-   * Made every single question in the generated paper editable on a granular level. Clicking the `🪄 Re-roll` action next to a question calls a specialized backend Gemini API endpoint to replace it with a new NCERT-compliant item matching the target marks and difficulty.
-5. **🔒 Concurrent Database Concurrency Security (`AsyncLock` + Memory Caching)**:
-   * Programmed an asynchronous mutex lock (`fileLock`) and memory cache buffer (`cachedData`) in `DBStore.ts` to coordinate simultaneous worker and route actions on `db_fallback.json`. Safely blocks write collisions and completely eliminates local database parsing wipeouts.
-6. **🖨️ Glassmorphism Print Preferences Modal**:
-   * Click **"Download as PDF"** to trigger a beautiful modal. Choose **"Print WITH Answers"** or **"Print WITHOUT Answers"** to dynamically restyle the entire page layout for student distribution using custom `@media print` rules.
-7. **🛠️ Modern `pdf-parse` Class Compatibility**:
+   * Built responsive, raw SVG visual metrics rendering class performance donut charts, animated bar charts, and administrative hours-saved gauges.
+4. **🪄 Scoped Gemini Single-Question "Re-roller"**:
+   * If a teacher is unsatisfied with a specific question, clicking the `🪄 Re-roll` action badge next to it invokes a specialized backend Gemini API endpoint to swap it out with a new NCERT-compliant question matching the same marks and difficulty.
+5. **🖨️ Glassmorphism Print Layout preferences**:
+   * Choose whether to print **With Answers** (for grading examiners) or **Without Answers** (for students). CSS `@media print` rules instantly strip sidebars, buttons, and restructure margins for perfect page-breaking.
+6. **🔒 Thread-Safe fallback database (`AsyncLock` + Memory Caching)**:
+   * Secures `db_fallback.json` from write collisions, guaranteeing absolute stability in zero-install reviews.
+7. **🗣️ Interactive Speech Mockup**:
+   * Clicking the microphone icon next to the instructions card triggers an audio wave pulse to voice-type lesson prompts.
+8. **🛠️ Modern `pdf-parse` Class Compatibility**:
    * Modernized PDF reference uploads to correctly utilize named `{ PDFParse }` class instantiations, unlocking high-speed text extraction for extremely large PDF uploads on the backend server.
-8. **🗣️ Interactive Speech Mockup**:
-   * Click the **Microphone Icon** next to the instructions box to launch an animated audio pulse that drafts search prompts on Grade 8 Science NCERT chapters.
-

@@ -1,50 +1,202 @@
-# VedaAI AI Assessment Creator: System Architecture
+# VedaAI AI Assessment Creator: Architectural Blueprint
 
-This document describes the high-level architecture, design decisions, and real-time flow of the AI Assessment Creator.
+This document delivers a comprehensive breakdown of the core architecture, design decisions, database schemas, and real-time execution flow of the **VedaAI AI Assessment Creator**.
 
 ---
 
-## High-Level System Flow
+## 🏗️ Decoupled Web Architecture
 
 ```mermaid
 graph TD
-    A[Frontend: Next.js + Zustand] -->|1. Submit Form| B[Backend Server: Express]
-    B -->|2. Create Assignment Record| C[(Database: MongoDB / Local File)]
-    B -->|3. Push Job to Queue| D[Queue: BullMQ / In-Memory Queue]
-    D -->|4. Pick Up Job| E[Worker Process]
-    E -->|5. Request Question Paper JSON| F[Gemini 3.5 Flash API]
-    F -->|6. Return Structured Output| E
-    E -->|7. Update Progress / Live Status| G[WebSocket: Socket.io]
-    G -->|8. Push Live Updates| A
-    E -->|9. Save Generated Output| C
-    E -->|10. Emit Completion| G
+    %% Frontend Components
+    subgraph Frontend ["Client Layer (Next.js & Zustand)"]
+        A["Teacher Dashboard UI (Outfit & Inter CSS)"]
+        Z["Zustand Global Store"]
+        W["Socket.io Client Context"]
+    end
+
+    %% Gateway and Routers
+    subgraph Gateway ["API & Message Routing (Express)"]
+        B["Express HTTP REST Server"]
+        WS["Socket.io WebSocket Server"]
+        M["Multer Middleware (Disk Storage)"]
+    end
+
+    %% Tasks and Workers
+    subgraph Queues ["Queue Processing Layer"]
+        D["BullMQ Tasks Router (Real Mode)"]
+        QE["In-Memory Task Queue (Fallback)"]
+        WK["Job Execution Worker"]
+    end
+
+    %% External & Services
+    subgraph Services ["External Services & Models"]
+        G35["Gemini 3.5 Flash AI Engine"]
+        PP["PDFParse Extraction Engine"]
+    end
+
+    %% Database & Persistence
+    subgraph DB ["Data Persistence Layer"]
+        MDB["MongoDB Atlas (Cloud Cluster)"]
+        FL["AsyncLock Mutex Serialization"]
+        JDB["Local db_fallback.json file"]
+    end
+
+    %% Interactions
+    A -->|1. Multipart Form Submission| B
+    A -->|2. Uploads file| M
+    M -->|Saves buffer| M
+    B -->|3. Upsert Assignment Record| MDB
+    B -->|3. Fallback Write JSON| FL
+    FL -->|Atomic Lock| JDB
+    B -->|4. Push Job Request| D
+    B -->|4. Fallback Event Loop| QE
+    D -->|Spawns| WK
+    QE -->|Invokes| WK
+    WK -->|5. Extract Text from PDF| PP
+    WK -->|6. JSON Schema System prompt| G35
+    G35 -->|7. Structured Response| WK
+    WK -->|8. Save exam paper data| MDB
+    WK -->|8. Fallback lock write| FL
+    WK -->|9. Progress & Status Ticks| WS
+    WS -->|10. Real-time Event broadcast| W
+    W -->|11. Hydrates Store and UI| Z
+    Z -->|Render Layout| A
 ```
 
 ---
 
-## Architectural Breakdown
+## ⚡ Real-Time Lifecycle Flow
 
-### 1. Frontend System (Next.js 14+)
-- **State Management**: Built using **Zustand** to store the active assignments list, loading states, and WebSocket notifications.
-- **Styling**: Structured using pure **Vanilla CSS** through modular CSS (`.module.css`) to enforce scoped classes, eliminating ad-hoc styling while matching the pixel-perfect Figma design.
-- **WebSocket Manager**: Connects to the backend Socket.io server. It registers connection rooms using the `assignmentId` and listens for progress events.
+The execution cycle of a question paper generation job consists of ten key stages, completely synchronized via WebSockets from start to completion:
 
-### 2. Backend Server (Express + Socket.io)
-- **API Router**: Exposes RESTful endpoints to create assignments, list existing runs, retrieve question papers, and delete records.
-- **WebSocket Handler**: Connects individual clients to room-based channels, allowing targeted event emissions so a user only gets notifications for their specific generation run.
+```text
+  [Teacher Browser]        [Express API]       [Queue/Worker]      [Gemini AI]      [Database]
+          │                      │                    │                 │                │
+          │─── Submit Form ─────>│                    │                 │                │
+          │    (Multipart File)  │── Enqueue Job ────>│                 │                │
+          │                      │                     │                 │                │
+          │<── HTTP 202 accepted │                    │                 │                │
+          │    (Redirect to HUD) │                    │                 │                │
+          │                      │                    │── Extract PDF ─>│                │
+          │                      │                    │                 │                │
+          │                      │                    │── JSON Prompt ─>│                │
+          │                      │                    │                 │                │
+          │<── WebSocket progress Tick (10-90%) ──────│                 │                │
+          │                      │                    │<── Raw JSON ────│                │
+          │                      │                    │                 │                │
+          │                      │                    │─── Save Paper ──────────────────>│
+          │                      │                    │                                  │
+          │<── WebSocket Complete Tick ───────────────│                                  │
+          │                                           │                                  │
+```
 
-### 3. Background Queue & Worker System
-- **Real Mode**: Uses **BullMQ** on top of **Redis** to ensure durable queue state, distributed execution, and atomic locks.
-- **Fallback Mode**: If Redis is not available, it uses an in-memory async task runner (`QueueEmulator`) which processes assignments sequentially using Node's event loop, retaining progress intervals and error management.
+---
 
-### 4. Database Layer
-- **Real Mode**: Uses **Mongoose** to connect to MongoDB, validating schemas for Assignments and Question Papers.
-- **Fallback Mode**: Uses a local JSON file store (`db_fallback.json`) which mimics Mongoose CRUD operations. Fully fortified with:
-  - **`AsyncLock` Mutex Serialization**: Sequences all concurrent route and background task database reads/writes, resolving race conditions.
-  - **In-Memory Cache Buffer (`cachedData`)**: Caches state in memory to gracefully buffer disk I/O and prevent silent data resets during partial write file stream states.
+## 🛡️ Dual-Mode Infrastructure Resilience
 
-### 5. AI Generation Service & Document Extraction
-- Formulates a highly structured prompt incorporating NCERT subject parameters, CBSE sections, and custom question distributions.
-- **Modern `pdf-parse` Class Engine**: Integrates modern cross-platform `PDFParse` class-based extraction to parse uploaded reference materials swiftly directly on the backend.
-- Invokes the **Gemini API** with system instructions demanding strict JSON output, validating section lists, question structures, and examiners answer keys in real-time.
+To fulfill high-signal engineering requirements, the application utilizes a **Zero-Dependency Auto-detecting Infrastructure Layer**. 
 
+> [!IMPORTANT]
+> When deployed in production environments, the system utilizes MongoDB and Redis. For local, zero-install review, the server gracefully activates software-engineered fallbacks that replicate full system capabilities.
+
+### 1. Database Layer (MongoDB vs. Atomic JSON Storage)
+* **Production Cluster**: The server establishes a connection to MongoDB via Mongoose. All models (Assignments, Question Papers, and Groups) are verified against robust schema validation rules.
+* **Resilient Fallback (`DBStore.ts`)**: If `MONGODB_URI` is omitted or local MongoDB is offline:
+  * Creates and manages `backend/db_fallback.json`.
+  * Utilizes `async-lock` to serialize all reading and writing processes, avoiding concurrency conflicts.
+  * Caches dataset transactions in a memory buffer (`cachedData`) to optimize I/O and prevent silent data overrides.
+
+### 2. Task Queue Layer (Redis & BullMQ vs. Memory Queue Emulator)
+* **Production Queue**: BullMQ manages task distributions on Redis, handling retries, delays, and state tracking.
+* **Resilient Fallback (`QueueEmulator.ts`)**: If Redis is offline:
+  * Activates an in-memory event-driven worker loop (`QueueEmulator`).
+  * Processes jobs asynchronously in the Node event loop, sending WebSocket progress notifications at intervals (`10% -> 40% -> 80% -> 100%`) matching BullMQ's lifecycle hooks.
+
+---
+
+## 🤖 Dynamic AI Generation & Structure
+
+The generation pipeline is built around the **Gemini 3.5 Flash** model, utilizing dynamic configurations and prompt compilation for professional CBSE exams.
+
+> [!TIP]
+> **Native JSON Generation Mode**
+> By utilizing the Gemini SDK parameter `{ responseMimeType: "application/json" }` on whitelisted model configurations, we force the AI to return a raw, syntactically correct JSON string. This eliminates markdown wrappers (` ```json `), preventing parsing failures.
+
+### AI Model Failover Stack
+To prevent API limits or system outages from disrupting the system, we implement a **cascading model failover loop**:
+1. **`gemini-3.5-flash`** (Primary - high speed, advanced reasoning)
+2. **`gemini-2.5-flash`** (First failover)
+3. **`gemini-2.5-flash-lite`** (Second failover)
+4. **`gemini-2.5-pro`** (Third failover)
+5. **`gemini-2.0-flash`** (Fourth failover)
+6. **`gemini-1.5-flash`** (Fifth failover)
+7. **`gemini-1.5-pro`** (Sixth failover)
+8. **`gemini-pro`** (Legacy fallback)
+9. **`Mock Generator`** (Offline fallback - compiles structured NCERT papers dynamically to allow immediate interface evaluation when no internet or API keys are available).
+
+---
+
+## 📊 Database Schemas (Typescript Interfaces)
+
+Our data models are strictly structured using TypeScript interfaces shared across the backend and frontend:
+
+```typescript
+export interface IQuestionType {
+  type: string;
+  count: number;
+  marksPerQuestion: number;
+}
+
+export interface IAssignment {
+  id: string;
+  title: string;
+  dueDate: string;
+  questionTypes: IQuestionType[];
+  additionalInstructions?: string;
+  examClass?: string;
+  examSection?: string;
+  examSubject?: string;
+  schoolName?: string;
+  fileUrl?: string;
+  fileName?: string;
+  totalQuestions: number;
+  totalMarks: number;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  progress: number;
+  statusText?: string;
+  createdAt: string;
+}
+
+export interface IQuestion {
+  id: string;
+  text: string;
+  options?: string[]; // Defined ONLY for MCQs
+  difficulty: 'Easy' | 'Moderate' | 'Hard';
+  marks: number;
+  answer: string;
+}
+
+export interface ISection {
+  title: string;
+  instruction: string;
+  questions: IQuestion[];
+}
+
+export interface IAnswerKeyItem {
+  questionId: string;
+  questionText: string;
+  answer: string;
+}
+
+export interface IQuestionPaper {
+  assignmentId: string;
+  schoolName: string;
+  subject: string;
+  gradeClass: string;
+  timeAllowed: string;
+  maxMarks: number;
+  sections: ISection[];
+  answerKey: IAnswerKeyItem[];
+}
+```
