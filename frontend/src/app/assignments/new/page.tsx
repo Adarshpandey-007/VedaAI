@@ -242,9 +242,9 @@ export default function CreateAssignmentPage() {
   const showLoader = isGenerating || showSuccessState;
 
   return (
-    <div className={styles.container}>
-      {!showLoader ? (
-        <>
+    <>
+      {!showLoader && (
+        <div className={styles.container}>
           {/* breadcrumb */}
           <div className={styles.header}>
             <div className={styles.breadcrumb}>
@@ -508,8 +508,10 @@ export default function CreateAssignmentPage() {
               </button>
             </div>
           </form>
-        </>
-      ) : (
+        </div>
+      )}
+
+      {showLoader && (
         /* WebSocket Generation progress HUD */
         <div className={styles.overlay}>
           <div className={styles.hudCard}>
@@ -547,6 +549,6 @@ export default function CreateAssignmentPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
